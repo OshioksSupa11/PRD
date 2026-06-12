@@ -20,19 +20,16 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary"
     >
-      {/* Background image with gradient overlay */}
+      {/* Background image */}
       <div className="absolute inset-0">
         {!bgError && (
           <img
-            src="https://hqsdmfmiawyxynyciwrx.supabase.co/storage/v1/object/public/profile-images/WhatsApp%20Image%202026-06-11%20at%204.49.59%20PM.jpeg"
+            src="https://hqsdmfmiawyxynyciwrx.supabase.co/storage/v1/object/public/profile-images/Background%201.jpeg"
             alt=""
             className="h-full w-full object-cover"
             onError={() => setBgError(true)}
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-light/85 to-primary/90" />
-        <div className="absolute top-1/4 right-1/4 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 lg:px-8">
@@ -41,10 +38,10 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-white/20 sm:h-36 sm:w-36"
+          className="mx-auto mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300/60 shadow-lg sm:h-36 sm:w-36"
         >
           {imgError ? (
-            <span className="flex h-full w-full items-center justify-center bg-white/5 text-4xl font-bold text-white/40 sm:text-5xl">
+            <span className="flex h-full w-full items-center justify-center bg-gray-200/20 text-4xl font-bold text-gray-700 sm:text-5xl">
               GE
             </span>
           ) : (
@@ -62,7 +59,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-7xl [text-shadow:0_0_20px_rgba(255,255,255,0.8)]"
         >
           {profile.name}
         </motion.h1>
@@ -72,7 +69,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-4 text-lg leading-relaxed text-slate-300 sm:text-xl md:text-2xl"
+          className="mt-4 text-lg leading-relaxed text-gray-800 sm:text-xl md:text-2xl [text-shadow:0_0_16px_rgba(255,255,255,0.8)]"
         >
           {profile.headline}
         </motion.p>
@@ -82,7 +79,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg"
+          className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-gray-700 sm:text-lg [text-shadow:0_0_12px_rgba(255,255,255,0.7)]"
         >
           Building safer environments through expert fire protection engineering,
           technical excellence, and a commitment to protecting what matters most.
@@ -107,7 +104,7 @@ export default function Hero() {
             href={profile.resumeUrl}
             variant="outline"
             size="lg"
-            className="min-w-[180px] border-white/30 text-white hover:border-accent hover:bg-accent"
+            className="min-w-[180px] border-gray-400/60 text-gray-800 hover:border-accent hover:bg-accent hover:text-white [text-shadow:0_0_8px_rgba(255,255,255,0.6)]"
           >
             <Download className="h-5 w-5" />
             Download Resume
@@ -116,7 +113,7 @@ export default function Hero() {
             onClick={() => scrollTo('contact')}
             variant="ghost"
             size="lg"
-            className="min-w-[180px] text-slate-300 hover:text-white hover:bg-white/10"
+            className="min-w-[180px] text-gray-700 hover:text-accent hover:bg-gray-100/30 [text-shadow:0_0_8px_rgba(255,255,255,0.6)]"
           >
             <Mail className="h-5 w-5" />
             Contact Me
@@ -129,7 +126,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
           onClick={() => scrollTo('highlights')}
-          className="mt-16 mx-auto flex animate-bounce items-center justify-center text-slate-500 hover:text-white transition-colors"
+          className="mt-16 mx-auto flex animate-bounce items-center justify-center text-gray-600 hover:text-gray-900 transition-colors [text-shadow:0_0_8px_rgba(255,255,255,0.6)]"
           aria-label="Scroll down"
         >
           <ArrowDown className="h-6 w-6" />
