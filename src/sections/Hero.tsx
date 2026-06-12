@@ -8,6 +8,7 @@ import { profile } from '@/data/profile';
 
 export default function Hero() {
   const [imgError, setImgError] = useState(false);
+  const [bgError, setBgError] = useState(false);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -19,9 +20,17 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary"
     >
-      {/* Subtle gradient background */}
+      {/* Background image with gradient overlay */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-light to-primary" />
+        {!bgError && (
+          <img
+            src="https://hqsdmfmiawyxynyciwrx.supabase.co/storage/v1/object/public/profile-images/WhatsApp%20Image%202026-06-11%20at%204.49.59%20PM.jpeg"
+            alt=""
+            className="h-full w-full object-cover"
+            onError={() => setBgError(true)}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-light/85 to-primary/90" />
         <div className="absolute top-1/4 right-1/4 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
         <div className="absolute bottom-1/4 left-1/4 h-72 w-72 rounded-full bg-accent/5 blur-3xl" />
       </div>
