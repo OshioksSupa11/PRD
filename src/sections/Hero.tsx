@@ -1,11 +1,14 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, Briefcase, Mail } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { profile } from '@/data/profile';
 
 export default function Hero() {
+  const [imgError, setImgError] = useState(false);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -24,14 +27,25 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 lg:px-8">
-        {/* Profile Photo Placeholder */}
+        {/* Profile Photo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-8 flex h-32 w-32 items-center justify-center rounded-full border-4 border-white/20 bg-white/5 sm:h-36 sm:w-36"
+          className="mx-auto mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-white/20 sm:h-36 sm:w-36"
         >
-          <span className="text-4xl font-bold text-white/40 sm:text-5xl">GE</span>
+          {imgError ? (
+            <span className="flex h-full w-full items-center justify-center bg-white/5 text-4xl font-bold text-white/40 sm:text-5xl">
+              GE
+            </span>
+          ) : (
+            <img
+              src={profile.profileImage}
+              alt={profile.name}
+              className="h-full w-full object-cover"
+              onError={() => setImgError(true)}
+            />
+          )}
         </motion.div>
 
         {/* Name */}
