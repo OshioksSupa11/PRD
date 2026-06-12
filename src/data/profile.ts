@@ -10,8 +10,8 @@ His career spans over a decade of hands-on experience in fire risk assessment, s
 
 Godsgrace is committed to advancing fire safety standards through continuous learning, professional certifications, and active participation in industry forums. He believes that effective fire protection is not just about meeting codes — it is about creating resilient environments where people can live and work with confidence.`,
   profileImage: 'https://hqsdmfmiawyxynyciwrx.supabase.co/storage/v1/object/public/profile-images/WhatsApp%20Image%202026-06-11%20at%204.49.59%20PM.jpeg',
-  email: 'godsgrace.edem@example.com',
-  phone: '+234 800 000 0000',
+  email: 'edem.godsgrace.o@gmail.com',
+  phone: '+2348137229089',
   linkedinUrl: 'https://linkedin.com/in/godsgrace-edem',
   githubUrl: 'https://github.com/godsgrace-edem',
   resumeUrl: '/documents/resume.pdf',
