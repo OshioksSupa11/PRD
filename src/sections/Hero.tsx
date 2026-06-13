@@ -41,7 +41,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mb-8 h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300/60 shadow-lg sm:h-36 sm:w-36"
+          className="mx-auto mb-8 h-40 w-40 overflow-hidden rounded-full border-4 border-white/30 shadow-lg sm:h-48 sm:w-48"
         >
           {imgError ? (
             <span className="flex h-full w-full items-center justify-center bg-gray-200/20 text-4xl font-bold text-gray-700 sm:text-5xl">
