@@ -81,7 +81,7 @@ export default function Contact() {
               <div className="mt-8 border-t border-border pt-6">
                 <div className="flex items-center gap-3 text-sm text-text-muted">
                   <MapPin className="h-4 w-4 text-accent" />
-                  Lagos, Nigeria
+                  Imo, Nigeria
                 </div>
               </div>
             </div>
