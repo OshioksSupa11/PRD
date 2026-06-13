@@ -65,7 +65,12 @@ export default function Navbar() {
         {/* Logo */}
         <button
           onClick={() => scrollTo('#hero')}
-          className="text-primary hover:text-accent transition-colors"
+          className={cn(
+            'transition-colors',
+            isScrolled
+              ? 'text-primary hover:text-accent'
+              : 'text-white hover:text-white/80'
+          )}
           aria-label="Go to top"
         >
           <Logo className="h-10 w-auto" />
@@ -81,7 +86,9 @@ export default function Navbar() {
                   'relative px-3 py-2 text-sm font-medium rounded-md transition-colors',
                   activeSection === link.href.replace('#', '')
                     ? 'text-accent'
-                    : 'text-text-muted hover:text-text'
+                    : isScrolled
+                      ? 'text-text-muted hover:text-text'
+                      : 'text-white/80 hover:text-white'
                 )}
               >
                 {link.label}
@@ -95,7 +102,12 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="inline-flex md:hidden items-center justify-center rounded-lg p-2 text-text-muted hover:text-text hover:bg-bg-alt transition-colors"
+          className={cn(
+            'inline-flex md:hidden items-center justify-center rounded-lg p-2 transition-colors',
+            isScrolled
+              ? 'text-text-muted hover:text-text hover:bg-bg-alt'
+              : 'text-white/80 hover:text-white hover:bg-white/10'
+          )}
           onClick={() => setIsMobileOpen(!isMobileOpen)}
           aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={isMobileOpen}
