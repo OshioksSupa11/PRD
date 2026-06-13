@@ -6,9 +6,10 @@ import FadeInSection from '@/components/shared/FadeInSection';
 interface TimelineItemProps {
   experience: Experience;
   index: number;
+  total: number;
 }
 
-export default function TimelineItem({ experience, index }: TimelineItemProps) {
+export default function TimelineItem({ experience, index, total }: TimelineItemProps) {
   const isCurrent = experience.endDate === null;
   const dateDisplay = isCurrent
     ? `${formatDate(experience.startDate)} — Present`
@@ -18,7 +19,7 @@ export default function TimelineItem({ experience, index }: TimelineItemProps) {
     <FadeInSection delay={index * 0.15}>
       <div className="relative pl-12 pb-12 last:pb-0">
         {/* Timeline line */}
-        {index < 3 && (
+        {index < total - 1 && (
           <div className="absolute left-[19px] top-10 bottom-0 w-px bg-border" />
         )}
 

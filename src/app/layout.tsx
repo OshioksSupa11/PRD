@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Godsgrace Edem — Fire Protection Engineer & Technical Specialist',
   description:
-    'Godsgrace Edem is a Fire Protection Engineer with 12+ years of experience designing and implementing fire safety systems across commercial, industrial, and residential sectors.',
+    'Godsgrace Edem is a Fire Protection Engineer with 6+ years of experience in inspection, testing, and maintenance of fire protection systems across commercial and industrial sectors.',
   keywords: [
     'Fire Protection Engineer',
     'Fire Safety',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Godsgrace Edem — Fire Protection Engineer',
     description:
-      'Fire Protection Engineer with 12+ years of experience in fire safety systems design and consulting.',
+      'Fire Protection Engineer with 6+ years of experience in fire protection systems maintenance and consulting.',
     type: 'website',
     locale: 'en_US',
     siteName: 'Godsgrace Edem Portfolio',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Godsgrace Edem — Fire Protection Engineer',
     description:
-      'Fire Protection Engineer with 12+ years of experience in fire safety systems design and consulting.',
+      'Fire Protection Engineer with 6+ years of experience in fire protection systems maintenance and consulting.',
   },
   robots: {
     index: true,

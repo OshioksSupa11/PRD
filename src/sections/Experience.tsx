@@ -11,13 +11,13 @@ export default function Experience() {
           <SectionHeading
             overline="Career"
             title="Professional Experience"
-            subtitle="Over a decade of progressive responsibility in fire protection and mechanical engineering."
+            subtitle="6+ years of hands-on experience in fire protection systems inspection, testing, and maintenance."
           />
         </FadeInSection>
 
         <div className="mt-16">
           {experiences.map((exp, i) => (
-            <TimelineItem key={exp.id} experience={exp} index={i} />
+            <TimelineItem key={exp.id} experience={exp} index={i} total={experiences.length} />
           ))}
         </div>
       </div>
