@@ -1,5 +1,6 @@
 import { Mail, ArrowUpRight, Globe, GitBranch } from 'lucide-react';
 import { profile } from '@/data/profile';
+import Logo from '@/components/ui/Logo';
 import type { NavLink } from '@/types';
 
 const footerLinks: NavLink[] = [
@@ -38,9 +39,7 @@ export default function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {/* Brand */}
           <div>
-            <span className="text-2xl font-bold tracking-tight">
-              GE<span className="text-accent">.</span>
-            </span>
+            <Logo className="h-10 w-auto text-white" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-slate-400">
               Fire Protection Engineer dedicated to creating safer environments through expert engineering and innovative solutions.
             </p>

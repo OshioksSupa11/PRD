@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useActiveSection from '@/hooks/useActiveSection';
+import Logo from '@/components/ui/Logo';
 import type { NavLink } from '@/types';
 
 const links: NavLink[] = [
@@ -64,9 +65,10 @@ export default function Navbar() {
         {/* Logo */}
         <button
           onClick={() => scrollTo('#hero')}
-          className="text-xl font-bold tracking-tight text-primary hover:text-accent transition-colors"
+          className="text-primary hover:text-accent transition-colors"
+          aria-label="Go to top"
         >
-          GE<span className="text-accent">.</span>
+          <Logo className="h-10 w-auto" />
         </button>
 
         {/* Desktop Links */}
