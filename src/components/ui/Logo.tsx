@@ -5,54 +5,57 @@ interface LogoProps {
 export default function Logo({ className }: LogoProps) {
   return (
     <svg
-      viewBox="0 0 72 36"
+      viewBox="0 0 88 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="GE Logo"
     >
-      <rect
-        x="2"
-        y="2"
-        width="32"
-        height="32"
-        rx="6"
-        stroke="currentColor"
-        strokeWidth="2.5"
-      />
+      {/* Compass/divider icon — engineering motif */}
+      <g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        {/* Left leg */}
+        <line x1="12" y1="32" x2="5" y2="4" />
+        {/* Right leg */}
+        <line x1="12" y1="32" x2="19" y2="4" />
+        {/* Hinge circle */}
+        <circle cx="12" cy="32" r="2.5" fill="currentColor" />
+        {/* Top accent arcs */}
+        <path d="M5 4 A10 8 0 0 1 19 4" fill="none" />
+      </g>
+
+      {/* Divider line */}
+      <line x1="24" y1="30" x2="24" y2="6" stroke="currentColor" strokeWidth="1" opacity="0.3" />
+
+      {/* G letterform — bold geometric */}
       <text
-        x="18"
+        x="40"
         y="26"
         textAnchor="middle"
         fill="currentColor"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="20"
-        fontWeight="700"
-        letterSpacing="-0.5"
+        fontSize="28"
+        fontWeight="800"
+        letterSpacing="-1"
       >
         G
       </text>
 
-      <rect
-        x="38"
-        y="2"
-        width="32"
-        height="32"
-        rx="6"
-        fill="currentColor"
-      />
+      {/* E letterform */}
       <text
-        x="54"
+        x="63"
         y="26"
         textAnchor="middle"
-        fill="white"
+        fill="currentColor"
         fontFamily="system-ui, -apple-system, sans-serif"
-        fontSize="20"
-        fontWeight="700"
-        letterSpacing="-0.5"
+        fontSize="28"
+        fontWeight="800"
+        letterSpacing="-1"
       >
         E
       </text>
+
+      {/* Engineering accent — thin rule beneath */}
+      <rect x="28" y="30" width="48" height="2.5" rx="1.25" fill="currentColor" />
     </svg>
   );
 }
