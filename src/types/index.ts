@@ -9,6 +9,8 @@ export interface Profile {
   linkedinUrl: string;
   githubUrl: string;
   resumeUrl: string;
+  resumeUrlDesigned?: string | null;
+  resumeUrlAts?: string | null;
 }
 
 export interface Stat {
@@ -27,6 +29,8 @@ export interface Skill {
   featured?: boolean;
 }
 
+export type ExperienceType = 'role' | 'certification' | 'milestone' | 'future';
+
 export interface Experience {
   id: string;
   position: string;
@@ -35,7 +39,7 @@ export interface Experience {
   endDate: string | null;
   responsibilities: string[];
   achievements: string[];
-  type?: 'work' | 'milestone' | 'future';
+  type?: ExperienceType;
 }
 
 export interface CaseStudy {
@@ -51,6 +55,14 @@ export interface CaseStudy {
   screenshots: string[];
 }
 
+export type ProjectType = 'engineering' | 'software' | 'hybrid';
+
+export interface Attachment {
+  label: string;
+  url: string;
+  type: 'image' | 'pdf' | 'link';
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -58,10 +70,14 @@ export interface Project {
   description: string;
   image: string;
   technologies: string[];
+  techStack?: string[];
   category: string;
+  type?: ProjectType;
   projectDate: string;
   externalLink?: string;
   featured: boolean;
+  published?: boolean;
+  attachments?: Attachment[];
   problem?: string | null;
   research?: string | null;
   solution?: string | null;
@@ -72,6 +88,7 @@ export interface Project {
   demoUrl?: string | null;
   githubUrl?: string | null;
   screenshots?: string[];
+  readTimeMinutes?: number | null;
 }
 
 export interface Certification {
@@ -120,6 +137,24 @@ export interface Achievement {
   achievementDate: string;
   icon: string;
   featured: boolean;
+}
+
+export interface TimelineEvent {
+  id: string;
+  year: number;
+  title: string;
+  description: string;
+  type: ExperienceType;
+  sortOrder: number;
+}
+
+export interface CurrentFocusItem {
+  id: string;
+  category: 'learning' | 'building' | 'reading';
+  label: string;
+  status: 'active' | 'progress' | 'soon';
+  progress: number;
+  sortOrder: number;
 }
 
 export interface NavLink {

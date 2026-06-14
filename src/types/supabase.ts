@@ -1,5 +1,11 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export interface Attachment {
+  label: string;
+  url: string;
+  type: 'image' | 'pdf' | 'link';
+}
+
 interface ProfileRow {
   id: string;
   name: string;
@@ -11,6 +17,8 @@ interface ProfileRow {
   linkedin_url: string | null;
   github_url: string | null;
   resume_url: string | null;
+  resume_url_designed: string | null;
+  resume_url_ats: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -32,10 +40,14 @@ interface ProjectRow {
   description: string;
   image_url: string | null;
   technologies: string[];
+  tech_stack: string[];
   category: string | null;
+  type: 'engineering' | 'software' | 'hybrid';
   project_date: string | null;
   external_link: string | null;
   featured: boolean;
+  published: boolean;
+  attachments: Json;
   problem: string | null;
   research: string | null;
   solution: string | null;
@@ -46,6 +58,7 @@ interface ProjectRow {
   demo_url: string | null;
   github_url: string | null;
   screenshots: string[];
+  read_time_minutes: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -122,6 +135,27 @@ interface AchievementRow {
   created_at: string;
 }
 
+interface TimelineEventRow {
+  id: string;
+  year: number;
+  title: string;
+  description: string;
+  type: 'role' | 'certification' | 'milestone' | 'future';
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface CurrentFocusItemRow {
+  id: string;
+  category: 'learning' | 'building' | 'reading';
+  label: string;
+  status: 'active' | 'progress' | 'soon';
+  progress: number;
+  sort_order: number;
+  created_at: string;
+}
+
 export interface Database {
   public: {
     Tables: {
@@ -169,6 +203,16 @@ export interface Database {
         Row: AchievementRow;
         Insert: Omit<AchievementRow, 'id' | 'created_at'> & Partial<Pick<AchievementRow, 'id'>>;
         Update: Partial<AchievementRow>;
+      };
+      timeline_events: {
+        Row: TimelineEventRow;
+        Insert: Omit<TimelineEventRow, 'id' | 'created_at' | 'updated_at'> & Partial<Pick<TimelineEventRow, 'id'>>;
+        Update: Partial<TimelineEventRow>;
+      };
+      current_focus_items: {
+        Row: CurrentFocusItemRow;
+        Insert: Omit<CurrentFocusItemRow, 'id' | 'created_at'> & Partial<Pick<CurrentFocusItemRow, 'id'>>;
+        Update: Partial<CurrentFocusItemRow>;
       };
     };
   };

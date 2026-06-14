@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 import { generateResponse, quickQuestions } from '@/lib/chat-responses';
 import type { ChatMessage } from '@/lib/chat-responses';
 import { cn } from '@/lib/utils';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setIsTyping(true);
+    trackEvent(AnalyticsEvents.AI_QUESTION_ASKED, { question: text.substring(0, 100) });
 
     setTimeout(() => {
       const response = generateResponse(text);
@@ -41,10 +43,17 @@ export default function ChatWidget() {
     }
   };
 
+  const toggleOpen = useCallback(() => {
+    if (!isOpen) {
+      trackEvent(AnalyticsEvents.AI_CHAT_OPEN);
+    }
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
   return (
     <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className={cn(
           'fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300',
           isOpen

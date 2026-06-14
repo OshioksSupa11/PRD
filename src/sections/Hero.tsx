@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, Briefcase, Mail, Shield, Award, FolderCheck, GraduationCap } from 'lucide-react';
+import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { profile } from '@/data/profile';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
@@ -96,33 +97,32 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
         >
-          <Button
-            onClick={() => scrollTo('projects')}
-            size="lg"
-            className="min-w-[180px]"
-          >
-            <Briefcase className="h-5 w-5" />
-            View My Work
-          </Button>
+          <Link href="/projects">
+            <Button size="lg" className="min-w-[180px]">
+              <Briefcase className="h-5 w-5" />
+              View My Work
+            </Button>
+          </Link>
           <Button
             href={profile.resumeUrl}
             variant="secondary"
             size="lg"
             className="min-w-[180px]"
-            onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD)}
+            onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD, { format: 'designed' })}
           >
             <Download className="h-5 w-5" />
             Download Resume
           </Button>
-          <Button
-            onClick={() => scrollTo('contact')}
-            variant="ghost"
-            size="lg"
-            className="min-w-[180px] text-white/70 hover:text-accent hover:bg-bg/10"
-          >
-            <Mail className="h-5 w-5" />
-            Contact Me
-          </Button>
+          <Link href="/contact">
+            <Button
+              variant="ghost"
+              size="lg"
+              className="min-w-[180px] text-white/70 hover:text-accent hover:bg-bg/10"
+            >
+              <Mail className="h-5 w-5" />
+              Contact Me
+            </Button>
+          </Link>
         </motion.div>
 
         <motion.div

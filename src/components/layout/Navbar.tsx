@@ -1,26 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X, Download, ChevronDown, FileText, FileCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useActiveSection from '@/hooks/useActiveSection';
 import Logo from '@/components/ui/Logo';
 import ThemeToggle from '@/components/ui/ThemeToggle';
+import { profile } from '@/data/profile';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 import type { NavLink } from '@/types';
 
 const links: NavLink[] = [
-  { label: 'Home', href: '#hero' },
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Certifications', href: '#certifications' },
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Certifications', href: '/certifications' },
   { label: 'Blog', href: '/blog' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
+  const resumeRef = useRef<HTMLDivElement>(null);
   const activeSection = useActiveSection();
 
   useEffect(() => {
@@ -30,7 +33,18 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu on section change without extra render
+    const onOutsideClick = (e: MouseEvent) => {
+      if (resumeRef.current && !resumeRef.current.contains(e.target as Node)) {
+        setResumeOpen(false);
+      }
+    };
+    if (resumeOpen) {
+      document.addEventListener('click', onOutsideClick);
+    }
+    return () => document.removeEventListener('click', onOutsideClick);
+  }, [resumeOpen]);
+
+  useEffect(() => {
     const timeout = setTimeout(() => setIsMobileOpen(false), 0);
     return () => clearTimeout(timeout);
   }, [activeSection]);
@@ -58,6 +72,17 @@ export default function Navbar() {
     }
   };
 
+  const handleDownload = (url: string, format: 'designed' | 'ats') => {
+    trackEvent(AnalyticsEvents.RESUME_DOWNLOAD, { format });
+    window.open(url, '_blank');
+    setResumeOpen(false);
+  };
+
+  const buttonBase = cn(
+    'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+    isScrolled ? 'text-text-muted hover:text-text' : 'text-white/80 hover:text-white'
+  );
+
   return (
     <header
       className={cn(
@@ -68,21 +93,17 @@ export default function Navbar() {
       )}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        {/* Logo */}
         <button
           onClick={() => scrollTo('#hero')}
           className={cn(
             'transition-colors',
-            isScrolled
-              ? 'text-primary hover:text-accent'
-              : 'text-white hover:text-white/80'
+            isScrolled ? 'text-primary hover:text-accent' : 'text-white hover:text-white/80'
           )}
           aria-label="Go to top"
         >
           <Logo className="h-10 w-auto" />
         </button>
 
-        {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-1">
           {links.map((link) => (
             <li key={link.href}>
@@ -92,11 +113,7 @@ export default function Navbar() {
                   'relative px-3 py-2 text-sm font-medium rounded-md transition-colors',
                   activeSection === link.href.replace('#', '')
                     ? 'text-accent'
-                    : isScrolled
-                      ? 'text-text-muted hover:text-text'
-                      : link.href.startsWith('/')
-                        ? 'text-white/80 hover:text-white'
-                        : 'text-white/80 hover:text-white'
+                    : buttonBase
                 )}
               >
                 {link.label}
@@ -108,8 +125,42 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop theme toggle + mobile toggle */}
         <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2" ref={resumeRef}>
+            <div className="relative">
+              <button
+                onClick={() => setResumeOpen(!resumeOpen)}
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-medium transition-all',
+                  isScrolled
+                    ? 'border-border text-text hover:border-accent hover:text-accent'
+                    : 'border-white/30 text-white hover:border-white/60 hover:text-white'
+                )}
+              >
+                <Download className="h-4 w-4" />
+                Resume
+                <ChevronDown className={cn('h-3 w-3 transition-transform', resumeOpen && 'rotate-180')} />
+              </button>
+              {resumeOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl border border-border bg-bg shadow-xl py-1 z-50">
+                  <button
+                    onClick={() => handleDownload(profile.resumeUrlDesigned || profile.resumeUrl, 'designed')}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text hover:bg-bg-alt transition-colors"
+                  >
+                    <FileCheck className="h-4 w-4 text-accent" />
+                    Designed PDF
+                  </button>
+                  <button
+                    onClick={() => handleDownload(profile.resumeUrlAts || profile.resumeUrl, 'ats')}
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text hover:bg-bg-alt transition-colors"
+                  >
+                    <FileText className="h-4 w-4 text-text-muted" />
+                    ATS-Friendly
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
           <ThemeToggle />
           <button
             className={cn(
@@ -127,7 +178,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {isMobileOpen && (
         <div className="md:hidden border-t border-border bg-bg">
           <ul className="flex flex-col px-4 py-4 space-y-1">
@@ -146,6 +196,28 @@ export default function Navbar() {
                 </button>
               </li>
             ))}
+            <li className="border-t border-border pt-2 mt-1">
+              <a
+                href={profile.resumeUrlDesigned || profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-lg text-base font-medium text-text-muted hover:bg-bg-alt hover:text-text transition-colors"
+              >
+                <Download className="h-5 w-5" />
+                Download Resume (Designed)
+              </a>
+            </li>
+            <li>
+              <a
+                href={profile.resumeUrlAts || profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-lg text-base font-medium text-text-muted hover:bg-bg-alt hover:text-text transition-colors"
+              >
+                <FileText className="h-5 w-5" />
+                Download Resume (ATS)
+              </a>
+            </li>
           </ul>
         </div>
       )}

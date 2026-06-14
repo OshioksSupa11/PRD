@@ -47,7 +47,7 @@ export const experiences: Experience[] = [
       'Participate in troubleshooting and corrective maintenance activities.',
     ],
     achievements: [],
-    type: 'work',
+    type: 'role',
   },
   {
     id: 'exp-2023',
@@ -99,7 +99,7 @@ export const experiences: Experience[] = [
     achievements: [
       'Contributed to improved inspection reporting and maintenance documentation consistency.',
     ],
-    type: 'work',
+    type: 'role',
   },
   {
     id: 'exp-3',
@@ -113,6 +113,6 @@ export const experiences: Experience[] = [
       'Supported maintenance operations and workplace safety practices.',
     ],
     achievements: [],
-    type: 'work',
+    type: 'role',
   },
 ];

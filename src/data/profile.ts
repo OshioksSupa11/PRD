@@ -15,6 +15,8 @@ Godsgrace is committed to advancing fire safety standards through continuous lea
   linkedinUrl: 'https://linkedin.com/in/godsgrace-edem',
   githubUrl: 'https://github.com/godsgrace-edem',
   resumeUrl: '/documents/resume.pdf',
+  resumeUrlDesigned: '/documents/resume.pdf',
+  resumeUrlAts: '/documents/resume-ats.pdf',
 };
 
 export const stats: Stat[] = [

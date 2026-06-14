@@ -2,7 +2,8 @@
 
 import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -12,6 +13,12 @@ export default function ThemeToggle() {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- hydration mismatch avoidance pattern
     setMounted(true);
   }, []);
+
+  const toggle = useCallback(() => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    trackEvent(AnalyticsEvents.THEME_TOGGLE, { theme: next });
+  }, [theme, setTheme]);
 
   if (!mounted) {
     return (
@@ -23,7 +30,7 @@ export default function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      onClick={toggle}
       className="inline-flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-bg-alt text-text-muted hover:text-text"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
     >

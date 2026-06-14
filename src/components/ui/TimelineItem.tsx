@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, Star, Lightbulb, Calendar, ChevronDown } from 'lucide-react';
+import { Briefcase, Star, Lightbulb, Award, Calendar, ChevronDown } from 'lucide-react';
 import { formatDate, cn } from '@/lib/utils';
 import type { Experience } from '@/types';
 import FadeInSection from '@/components/shared/FadeInSection';
@@ -14,7 +14,8 @@ interface TimelineItemProps {
 }
 
 const typeConfig = {
-  work: { icon: Briefcase, dotColor: 'bg-accent' },
+  role: { icon: Briefcase, dotColor: 'bg-accent' },
+  certification: { icon: Award, dotColor: 'bg-yellow-500' },
   milestone: { icon: Star, dotColor: 'bg-yellow-500' },
   future: { icon: Lightbulb, dotColor: 'bg-accent-light' },
 };
@@ -27,7 +28,7 @@ export default function TimelineItem({ experience, index, total }: TimelineItemP
     ? `${formatDate(experience.startDate)} — Present`
     : `${formatDate(experience.startDate)} — ${formatDate(experience.endDate!)}`;
 
-  const config = typeConfig[experience.type || 'work'];
+  const config = typeConfig[experience.type || 'role'];
 
   return (
     <FadeInSection delay={index * 0.1}>
