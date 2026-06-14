@@ -2,9 +2,17 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Download, Briefcase, Mail } from 'lucide-react';
+import { ArrowDown, Download, Briefcase, Mail, Shield, Award, FolderCheck, GraduationCap } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { profile } from '@/data/profile';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
+
+const trustIndicators = [
+  { label: 'Years Experience', value: '6+', icon: Shield },
+  { label: 'Certifications', value: '8', icon: Award },
+  { label: 'Projects', value: '45+', icon: FolderCheck },
+  { label: 'Training Courses', value: '10+', icon: GraduationCap },
+];
 
 export default function Hero() {
   const [imgError, setImgError] = useState(false);
@@ -20,7 +28,6 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary"
     >
-      {/* Background image */}
       <div className="absolute inset-0">
         {!bgError && (
           <img
@@ -32,11 +39,9 @@ export default function Hero() {
         )}
       </div>
 
-      {/* Background overlay */}
       <div className="absolute inset-0 bg-primary/70 backdrop-brightness-50" />
 
       <div className="relative z-10 mx-auto max-w-4xl px-4 py-32 text-center sm:px-6 lg:px-8">
-        {/* Profile Photo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -57,7 +62,6 @@ export default function Hero() {
           )}
         </motion.div>
 
-        {/* Name */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,28 +71,25 @@ export default function Hero() {
           {profile.name}
         </motion.h1>
 
-        {/* Headline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-4 text-lg leading-relaxed text-white/90 sm:text-xl md:text-2xl"
+          className="mt-4 text-lg leading-relaxed text-accent-light sm:text-xl md:text-2xl"
         >
-          {profile.headline}
+          Fire Protection Engineer & Emerging Technology Builder
         </motion.p>
 
-        {/* Intro */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/80 sm:text-lg"
         >
-          Building safer environments through expert fire protection engineering,
-          technical excellence, and a commitment to protecting what matters most.
+          Helping organizations improve safety, reliability, and operational efficiency
+          through engineering expertise and digital innovation.
         </motion.p>
 
-        {/* CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -101,13 +102,14 @@ export default function Hero() {
             className="min-w-[180px]"
           >
             <Briefcase className="h-5 w-5" />
-            View Projects
+            View My Work
           </Button>
           <Button
             href={profile.resumeUrl}
-            variant="outline"
+            variant="secondary"
             size="lg"
-            className="min-w-[180px] border-white/50 text-white hover:border-accent hover:bg-accent"
+            className="min-w-[180px]"
+            onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD)}
           >
             <Download className="h-5 w-5" />
             Download Resume
@@ -116,14 +118,30 @@ export default function Hero() {
             onClick={() => scrollTo('contact')}
             variant="ghost"
             size="lg"
-            className="min-w-[180px] text-white/70 hover:text-accent hover:bg-white/10"
+            className="min-w-[180px] text-white/70 hover:text-accent hover:bg-bg/10"
           >
             <Mail className="h-5 w-5" />
             Contact Me
           </Button>
         </motion.div>
 
-        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-10"
+        >
+          {trustIndicators.map((indicator) => (
+            <div key={indicator.label} className="flex items-center gap-2 text-white/80">
+              <indicator.icon className="h-4 w-4 text-accent-light" />
+              <span className="text-sm">
+                <strong className="text-white">{indicator.value}</strong>{' '}
+                <span className="hidden sm:inline text-white/60">{indicator.label}</span>
+              </span>
+            </div>
+          ))}
+        </motion.div>
+
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

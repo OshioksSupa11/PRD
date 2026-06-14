@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useActiveSection from '@/hooks/useActiveSection';
 import Logo from '@/components/ui/Logo';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 import type { NavLink } from '@/types';
 
 const links: NavLink[] = [
@@ -13,6 +14,7 @@ const links: NavLink[] = [
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
   { label: 'Certifications', href: '#certifications' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -45,6 +47,10 @@ export default function Navbar() {
   }, [isMobileOpen]);
 
   const scrollTo = (href: string) => {
+    if (href.startsWith('/')) {
+      window.location.href = href;
+      return;
+    }
     const id = href.replace('#', '');
     const el = document.getElementById(id);
     if (el) {
@@ -57,7 +63,7 @@ export default function Navbar() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white/90 backdrop-blur-lg border-b border-border shadow-sm'
+          ? 'bg-bg/90 backdrop-blur-lg border-b border-border shadow-sm'
           : 'bg-transparent'
       )}
     >
@@ -88,7 +94,9 @@ export default function Navbar() {
                     ? 'text-accent'
                     : isScrolled
                       ? 'text-text-muted hover:text-text'
-                      : 'text-white/80 hover:text-white'
+                      : link.href.startsWith('/')
+                        ? 'text-white/80 hover:text-white'
+                        : 'text-white/80 hover:text-white'
                 )}
               >
                 {link.label}
@@ -100,25 +108,28 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile Toggle */}
-        <button
-          className={cn(
-            'inline-flex md:hidden items-center justify-center rounded-lg p-2 transition-colors',
-            isScrolled
-              ? 'text-text-muted hover:text-text hover:bg-bg-alt'
-              : 'text-white/80 hover:text-white hover:bg-white/10'
-          )}
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isMobileOpen}
-        >
-          {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        {/* Desktop theme toggle + mobile toggle */}
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            className={cn(
+              'inline-flex md:hidden items-center justify-center rounded-lg p-2 transition-colors',
+              isScrolled
+                ? 'text-text-muted hover:text-text hover:bg-bg-alt'
+                : 'text-white/80 hover:text-white hover:bg-bg/10'
+            )}
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileOpen}
+          >
+            {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
       {isMobileOpen && (
-        <div className="md:hidden border-t border-border bg-white">
+        <div className="md:hidden border-t border-border bg-bg">
           <ul className="flex flex-col px-4 py-4 space-y-1">
             {links.map((link) => (
               <li key={link.href}>

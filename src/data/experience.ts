@@ -2,10 +2,42 @@ import { Experience } from '@/types';
 
 export const experiences: Experience[] = [
   {
+    id: 'exp-future',
+    position: 'Technology Founder',
+    company: 'Building the Future',
+    startDate: '2027',
+    endDate: null,
+    responsibilities: [
+      'Launch SaaS products at the intersection of engineering and technology.',
+      'Build digital tools for fire protection engineering workflows.',
+      'Create educational content for the next generation of engineer-builders.',
+    ],
+    achievements: [],
+    type: 'future',
+  },
+  {
+    id: 'exp-2026',
+    position: 'Software Development Journey',
+    company: 'Self-Directed Learning',
+    startDate: '2026-01',
+    endDate: null,
+    responsibilities: [
+      'Learning full-stack development with Next.js, TypeScript, and modern tooling.',
+      'Building portfolio platform and personal projects.',
+      'Exploring AI and machine learning applications in engineering.',
+    ],
+    achievements: [
+      'Built professional portfolio platform from scratch.',
+      'Completed courses in web development and TypeScript.',
+      'Started transitioning engineering expertise into technology solutions.',
+    ],
+    type: 'milestone',
+  },
+  {
     id: 'exp-1',
     position: 'Fire Maintenance Engineer',
     company: 'Hurlag Technologies Limited, Lagos, Nigeria',
-    startDate: '2026-01',
+    startDate: '2025-01',
     endDate: null,
     responsibilities: [
       'Supervise inspection, testing, and maintenance activities for fire protection systems.',
@@ -15,13 +47,48 @@ export const experiences: Experience[] = [
       'Participate in troubleshooting and corrective maintenance activities.',
     ],
     achievements: [],
+    type: 'work',
+  },
+  {
+    id: 'exp-2023',
+    position: 'NFPA Training Certification',
+    company: 'National Fire Protection Association',
+    startDate: '2023-01',
+    endDate: '2023-12',
+    responsibilities: [
+      'Completed comprehensive NFPA training and certification program.',
+      'Studied NFPA codes and standards for fire protection systems.',
+      'Gained specialized knowledge in fire suppression and alarm systems.',
+    ],
+    achievements: [
+      'Earned NFPA certification demonstrating advanced fire protection knowledge.',
+    ],
+    type: 'milestone',
+  },
+  {
+    id: 'exp-2020',
+    position: 'Major Engineering Projects',
+    company: 'Multiple Organizations',
+    startDate: '2020-01',
+    endDate: '2022-12',
+    responsibilities: [
+      'Led fire protection system design for commercial and industrial projects.',
+      'Conducted fire safety compliance audits and remediation designs.',
+      'Collaborated with cross-functional teams on large-scale installations.',
+    ],
+    achievements: [
+      'Completed 30+ major engineering projects across multiple sectors.',
+      'Developed expertise in NFPA code application and system design.',
+      'Built reputation for quality and reliability in fire protection.',
+    ],
+    type: 'milestone',
   },
   {
     id: 'exp-2',
     position: 'Fire Maintenance Technician',
     company: 'Hurlag Technologies Limited, Lagos, Nigeria',
     startDate: '2019-07',
-    endDate: '2025-12',
+    endDate: '2024-12',
     responsibilities: [
       'Performed routine inspection, testing, and maintenance of fire protection systems and equipment.',
       'Supported maintenance of sprinkler systems, hydrants, pumps, and alarm systems.',
@@ -32,6 +99,7 @@ export const experiences: Experience[] = [
     achievements: [
       'Contributed to improved inspection reporting and maintenance documentation consistency.',
     ],
+    type: 'work',
   },
   {
     id: 'exp-3',
@@ -45,5 +113,6 @@ export const experiences: Experience[] = [
       'Supported maintenance operations and workplace safety practices.',
     ],
     achievements: [],
+    type: 'work',
   },
 ];

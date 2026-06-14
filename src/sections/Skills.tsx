@@ -23,7 +23,7 @@ export default function Skills() {
         <div className="mt-16 grid gap-10 sm:grid-cols-2">
           {groupedSkills.map((group, gi) => (
             <FadeInSection key={group.name} delay={gi * 0.1}>
-              <div className="rounded-xl border border-border bg-white p-6 sm:p-8">
+              <div className="rounded-xl border border-border bg-bg p-6 sm:p-8">
                 <h3 className="text-lg font-bold text-primary">{group.name}</h3>
                 <p className="mt-1 text-sm text-text-muted">
                   {group.description}

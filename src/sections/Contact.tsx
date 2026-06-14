@@ -40,7 +40,7 @@ export default function Contact() {
         <div className="mt-16 grid gap-12 lg:grid-cols-5 lg:gap-16">
           {/* Contact Info */}
           <FadeInSection className="lg:col-span-2" delay={0.1}>
-            <div className="rounded-xl border border-border bg-white p-8">
+            <div className="rounded-xl border border-border bg-bg p-8">
               <h3 className="text-lg font-bold text-primary">
                 Contact Information
               </h3>
@@ -89,7 +89,7 @@ export default function Contact() {
 
           {/* Contact Form */}
           <FadeInSection className="lg:col-span-3" delay={0.2}>
-            <div className="rounded-xl border border-border bg-white p-8">
+            <div className="rounded-xl border border-border bg-bg p-8">
               <h3 className="text-lg font-bold text-primary">
                 Send a Message
               </h3>

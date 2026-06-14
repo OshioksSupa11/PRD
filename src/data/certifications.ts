@@ -7,6 +7,9 @@ export const certifications: Certification[] = [
     issuer: 'National Fire Protection Association (NFPA)',
     issueDate: '2015-06',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.nfpa.org/cfps',
+    skillTags: ['NFPA', 'Fire Protection', 'Code Compliance'],
   },
   {
     id: 'cert-2',
@@ -14,6 +17,9 @@ export const certifications: Certification[] = [
     issuer: 'Council for the Regulation of Engineering in Nigeria (COREN)',
     issueDate: '2016-11',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: '#',
+    skillTags: ['Engineering', 'Fire Protection', 'Licensure'],
   },
   {
     id: 'cert-3',
@@ -21,6 +27,9 @@ export const certifications: Certification[] = [
     issuer: 'National Institute for Certification in Engineering Technologies',
     issueDate: '2018-03',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.nicet.org',
+    skillTags: ['Engineering Technology', 'Fire Alarm', 'Sprinkler Systems'],
   },
   {
     id: 'cert-4',
@@ -28,6 +37,9 @@ export const certifications: Certification[] = [
     issuer: 'International Code Council (ICC)',
     issueDate: '2017-09',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.iccsafe.org',
+    skillTags: ['Inspection', 'Fire Code', 'Building Safety'],
   },
   {
     id: 'cert-5',
@@ -35,6 +47,9 @@ export const certifications: Certification[] = [
     issuer: 'Occupational Safety and Health Administration (OSHA)',
     issueDate: '2019-01',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: '#',
+    skillTags: ['Hazardous Materials', 'Safety', 'Industrial'],
   },
   {
     id: 'cert-6',
@@ -42,6 +57,9 @@ export const certifications: Certification[] = [
     issuer: 'Project Management Institute (PMI)',
     issueDate: '2020-07',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.pmi.org',
+    skillTags: ['Project Management', 'Leadership', 'Stakeholder Management'],
   },
   {
     id: 'cert-7',
@@ -49,6 +67,9 @@ export const certifications: Certification[] = [
     issuer: 'U.S. Green Building Council (USGBC)',
     issueDate: '2021-04',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.usgbc.org',
+    skillTags: ['Sustainability', 'Green Building', 'Energy Efficiency'],
   },
   {
     id: 'cert-8',
@@ -56,5 +77,8 @@ export const certifications: Certification[] = [
     issuer: 'Board of Certified Safety Professionals (BCSP)',
     issueDate: '2022-02',
     certificateUrl: '#',
+    imageUrl: null,
+    verificationUrl: 'https://www.bcsp.org',
+    skillTags: ['Safety', 'Risk Management', 'Compliance'],
   },
 ];

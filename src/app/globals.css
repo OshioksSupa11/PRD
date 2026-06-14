@@ -15,6 +15,19 @@
   --font-mono: var(--font-geist-mono);
 }
 
+[data-theme="dark"] {
+  --color-primary: #E2E8F0;
+  --color-primary-light: #CBD5E1;
+  --color-accent: #EF4444;
+  --color-accent-light: #F87171;
+  --color-accent-dark: #DC2626;
+  --color-bg: #0F172A;
+  --color-bg-alt: #1E293B;
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-border: #334155;
+}
+
 * {
   scroll-behavior: smooth;
 }

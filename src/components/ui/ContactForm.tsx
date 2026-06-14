@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
+import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ export default function ContactForm() {
 
         setStatus('success');
         setFormData({ name: '', email: '', subject: '', message: '' });
+        trackEvent(AnalyticsEvents.CONTACT_FORM_SUBMIT);
       } catch (err) {
         setStatus('error');
         setErrorMessage(
@@ -50,11 +52,11 @@ export default function ContactForm() {
   };
 
   const inputClass =
-    'w-full rounded-lg border border-border bg-white px-4 py-3 text-text placeholder:text-text-muted/60 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
+    'w-full rounded-lg border border-border bg-bg px-4 py-3 text-text placeholder:text-text-muted/60 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
 
   if (status === 'success') {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-white p-12 text-center">
+      <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-bg p-12 text-center">
         <CheckCircle className="h-12 w-12 text-accent" />
         <h3 className="mt-4 text-xl font-bold text-primary">Message Sent!</h3>
         <p className="mt-2 text-text-muted">

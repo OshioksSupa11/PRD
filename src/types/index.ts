@@ -23,6 +23,8 @@ export interface Skill {
   id: string;
   name: string;
   category: SkillCategory;
+  proficiency?: number;
+  featured?: boolean;
 }
 
 export interface Experience {
@@ -33,6 +35,20 @@ export interface Experience {
   endDate: string | null;
   responsibilities: string[];
   achievements: string[];
+  type?: 'work' | 'milestone' | 'future';
+}
+
+export interface CaseStudy {
+  problem: string | null;
+  research: string | null;
+  solution: string | null;
+  designDecisions: string | null;
+  challenges: string | null;
+  results: string | null;
+  lessonsLearned: string | null;
+  demoUrl: string | null;
+  githubUrl: string | null;
+  screenshots: string[];
 }
 
 export interface Project {
@@ -46,6 +62,16 @@ export interface Project {
   projectDate: string;
   externalLink?: string;
   featured: boolean;
+  problem?: string | null;
+  research?: string | null;
+  solution?: string | null;
+  designDecisions?: string | null;
+  challenges?: string | null;
+  results?: string | null;
+  lessonsLearned?: string | null;
+  demoUrl?: string | null;
+  githubUrl?: string | null;
+  screenshots?: string[];
 }
 
 export interface Certification {
@@ -54,6 +80,46 @@ export interface Certification {
   issuer: string;
   issueDate: string;
   certificateUrl?: string;
+  imageUrl?: string | null;
+  verificationUrl?: string | null;
+  skillTags?: string[];
+}
+
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  content: string;
+  imageUrl?: string | null;
+  featured: boolean;
+  sortOrder: number;
+}
+
+export type BlogCategory = 'Fire Protection' | 'Engineering' | 'Software Development' | 'Artificial Intelligence' | 'Career Development';
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImage?: string | null;
+  category: BlogCategory;
+  tags: string[];
+  publishedAt: string | null;
+  featured: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  achievementDate: string;
+  icon: string;
+  featured: boolean;
 }
 
 export interface NavLink {
