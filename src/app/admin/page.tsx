@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FolderOpen, Award, FileText, MessageSquare } from 'lucide-react';
-import { getAdminStats } from '@/lib/actions/health';
 
 interface AdminStats {
   projects: number;
@@ -18,16 +17,17 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    getAdminStats().then((result) => {
-      if (result.error) {
-        setError(result.error);
-      }
-      setStats(result);
-      setLoading(false);
-    }).catch((err) => {
-      setError(err instanceof Error ? err.message : 'Failed to fetch stats');
-      setLoading(false);
-    });
+    fetch('/api/admin-stats')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) setError(data.error);
+        setStats(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+        setLoading(false);
+      });
   }, []);
 
   const statCards = [
