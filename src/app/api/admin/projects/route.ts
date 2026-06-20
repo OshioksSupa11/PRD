@@ -1,42 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-function getHeaders(): HeadersInit {
-  return key
-    ? { apikey: key, 'Content-Type': 'application/json', Prefer: 'return=representation' }
-    : {};
-}
+import { createClient } from '@/lib/supabase/server';
 
 export async function GET() {
-  if (!url || !key) return NextResponse.json([], { status: 500 });
-  const res = await fetch(`${url}/rest/v1/projects?select=*&order=created_at.desc`, { headers: { apikey: key } });
-  return NextResponse.json(await res.json());
+  const supabase = await createClient();
+  const { data } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+  return NextResponse.json(data || []);
 }
 
 export async function POST(request: NextRequest) {
-  if (!url || !key) return NextResponse.json({ error: 'Config missing' }, { status: 500 });
+  const supabase = await createClient();
   const body = await request.json();
-  const res = await fetch(`${url}/rest/v1/projects`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(body) });
-  const data = await res.json();
-  if (!res.ok) return NextResponse.json(data, { status: res.status });
+  const { data, error } = await supabase.from('projects').insert(body).select();
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json(data);
 }
 
 export async function PUT(request: NextRequest) {
-  if (!url || !key) return NextResponse.json({ error: 'Config missing' }, { status: 500 });
+  const supabase = await createClient();
   const { id, ...body } = await request.json();
-  const res = await fetch(`${url}/rest/v1/projects?id=eq.${encodeURIComponent(id)}`, { method: 'PATCH', headers: getHeaders(), body: JSON.stringify(body) });
-  if (!res.ok) return NextResponse.json({ error: 'Update failed' }, { status: res.status });
+  const { error } = await supabase.from('projects').update(body).eq('id', id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ success: true });
 }
 
 export async function DELETE(request: NextRequest) {
-  if (!url || !key) return NextResponse.json({ error: 'Config missing' }, { status: 500 });
+  const supabase = await createClient();
   const id = request.nextUrl.searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
-  const res = await fetch(`${url}/rest/v1/projects?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE', headers: { apikey: key } });
-  if (!res.ok) return NextResponse.json({ error: 'Delete failed' }, { status: res.status });
+  const { error } = await supabase.from('projects').delete().eq('id', id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   return NextResponse.json({ success: true });
 }
