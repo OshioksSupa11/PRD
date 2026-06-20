@@ -72,7 +72,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl"
           >
-            Hi, {profile.name}
+            Hi, I&apos;m {profile.name}
           </motion.h1>
 
           <motion.p
