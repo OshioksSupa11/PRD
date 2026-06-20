@@ -101,7 +101,7 @@ export default function Hero() {
             className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
           >
             <Link href="/projects">
-              <Button size="lg" className="min-w-[180px]">
+              <Button size="lg" className="min-w-[180px] whitespace-nowrap">
                 <Briefcase className="h-5 w-5" />
                 View My Work
               </Button>
@@ -144,22 +144,23 @@ export default function Hero() {
               </div>
             ))}
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-            className="mt-12 flex justify-center lg:justify-start"
-          >
-            <button
-              onClick={() => scrollTo('highlights')}
-              className="flex animate-bounce items-center justify-center text-white/60 hover:text-white transition-colors"
-              aria-label="Scroll down"
-            >
-              <ArrowDown className="h-6 w-6" />
-            </button>
-          </motion.div>
         </div>
+      </div>
+
+      <div className="relative z-10 flex justify-center pb-6">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+        >
+          <button
+            onClick={() => scrollTo('highlights')}
+            className="flex animate-bounce text-white/60 hover:text-white transition-colors"
+            aria-label="Scroll down"
+          >
+            <ArrowDown className="h-6 w-6" />
+          </button>
+        </motion.div>
       </div>
     </section>
   );
