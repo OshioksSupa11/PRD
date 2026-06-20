@@ -8,6 +8,7 @@ interface ExperienceFormData {
   company: string;
   start_date: string;
   end_date: string;
+  type: string;
   responsibilities: string;
   achievements: string;
 }
@@ -18,6 +19,7 @@ interface Experience {
   company: string;
   start_date: string;
   end_date: string | null;
+  type: string;
   responsibilities: string[];
   achievements: string[];
 }
@@ -27,12 +29,15 @@ const emptyForm: ExperienceFormData = {
   company: '',
   start_date: '',
   end_date: '',
+  type: 'role',
   responsibilities: '',
   achievements: '',
 };
 
 const inputClass =
   'w-full rounded-lg border border-border bg-bg-alt px-3 py-2 text-sm text-text placeholder:text-text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
+
+const typeOptions = ['role', 'certification', 'milestone', 'future'];
 
 
 export default function ExperiencePage() {
@@ -70,6 +75,7 @@ export default function ExperiencePage() {
       company: item.company,
       start_date: item.start_date,
       end_date: item.end_date || '',
+      type: item.type || 'role',
       responsibilities: item.responsibilities?.join(', ') || '',
       achievements: item.achievements?.join(', ') || '',
     });
@@ -175,6 +181,20 @@ export default function ExperiencePage() {
                 onChange={(e) => setForm({ ...form, end_date: e.target.value })}
               />
             </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-text">Type</label>
+              <select
+                className={inputClass}
+                value={form.type}
+                onChange={(e) => setForm({ ...form, type: e.target.value })}
+              >
+                {typeOptions.map((t) => (
+                  <option key={t} value={t}>
+                    {t.charAt(0).toUpperCase() + t.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="sm:col-span-2">
               <label className="mb-1 block text-xs font-medium text-text">
                 Responsibilities (comma separated)
@@ -245,6 +265,9 @@ export default function ExperiencePage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">
                   Dates
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-text-muted">
+                  Type
+                </th>
                 <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-text-muted">
                   Actions
                 </th>
@@ -259,6 +282,11 @@ export default function ExperiencePage() {
                   <td className="px-6 py-4 text-sm text-text-muted">{item.company}</td>
                   <td className="px-6 py-4 text-sm text-text-muted">
                     {item.start_date} &ndash; {item.end_date || 'Present'}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent capitalize">
+                      {item.type || 'role'}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-1">
