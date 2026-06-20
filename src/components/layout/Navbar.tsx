@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Download, ChevronDown, FileText, FileCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import useActiveSection from '@/hooks/useActiveSection';
@@ -20,8 +21,11 @@ const links: NavLink[] = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+
+  if (pathname?.startsWith('/admin')) return null;
   const [resumeOpen, setResumeOpen] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
   const activeSection = useActiveSection();
