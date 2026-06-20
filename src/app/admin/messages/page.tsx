@@ -2,11 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Mail, Trash2, Eye, EyeOff, CheckCircle, Clock } from 'lucide-react';
-import {
-  updateMessageStatus,
-  deleteMessage,
-} from '@/lib/actions/messages';
-
 interface Message {
   id: string;
   name: string;
@@ -42,13 +37,17 @@ export default function MessagesPage() {
   }, []);
 
   const handleStatusUpdate = async (id: string, status: 'read' | 'replied' | 'unread') => {
-    await updateMessageStatus(id, status);
+    await fetch('/api/admin/messages', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    });
     fetchMessages();
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this message?')) return;
-    await deleteMessage(id);
+    await fetch(`/api/admin/messages?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     fetchMessages();
   };
 

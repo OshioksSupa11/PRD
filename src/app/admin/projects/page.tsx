@@ -2,12 +2,29 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { Plus, Pencil, Trash2, FolderOpen, X, ChevronDown, ChevronUp } from 'lucide-react';
-import {
-  createProject,
-  updateProject,
-  deleteProject,
-  type ProjectFormData,
-} from '@/lib/actions/projects';
+interface ProjectFormData {
+  title: string;
+  slug: string;
+  description: string;
+  image_url?: string;
+  technologies?: string;
+  tech_stack?: string;
+  category?: string;
+  type?: string;
+  project_date?: string;
+  external_link?: string;
+  featured?: boolean;
+  published?: boolean;
+  problem?: string;
+  research?: string;
+  solution?: string;
+  design_decisions?: string;
+  challenges?: string;
+  results?: string;
+  lessons_learned?: string;
+  demo_url?: string;
+  github_url?: string;
+}
 
 interface Project {
   id: string;
@@ -151,11 +168,14 @@ export default function ProjectsPage() {
   const handleSubmit = () => {
     setError('');
     startTransition(async () => {
-      const result = editingId
-        ? await updateProject(editingId, form)
-        : await createProject(form);
-      if (!result.success) {
-        setError(result.error || 'Something went wrong');
+      const res = await fetch('/api/admin/projects', {
+        method: editingId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || 'Something went wrong');
         return;
       }
       setShowForm(false);
@@ -165,7 +185,7 @@ export default function ProjectsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this project?')) return;
-    await deleteProject(id);
+    await fetch(`/api/admin/projects?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     fetchProjects();
   };
 

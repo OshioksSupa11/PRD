@@ -2,12 +2,17 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { Plus, Pencil, Trash2, FileText, X } from 'lucide-react';
-import {
-  createBlogPost,
-  updateBlogPost,
-  deleteBlogPost,
-  type BlogFormData,
-} from '@/lib/actions/blog';
+interface BlogFormData {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  cover_image?: string;
+  category?: string;
+  tags?: string;
+  published_at?: string;
+  featured?: boolean;
+}
 
 interface BlogPost {
   id: string;
@@ -110,11 +115,14 @@ export default function BlogPage() {
   const handleSubmit = () => {
     setError('');
     startTransition(async () => {
-      const result = editingId
-        ? await updateBlogPost(editingId, form)
-        : await createBlogPost(form);
-      if (!result.success) {
-        setError(result.error || 'Something went wrong');
+      const res = await fetch('/api/admin/blog', {
+        method: editingId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || 'Something went wrong');
         return;
       }
       setShowForm(false);
@@ -124,7 +132,7 @@ export default function BlogPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this blog post?')) return;
-    await deleteBlogPost(id);
+    await fetch(`/api/admin/blog?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     fetchPosts();
   };
 

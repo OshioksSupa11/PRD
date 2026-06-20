@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { adminLogin } from '@/lib/actions/auth';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -18,15 +17,23 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const result = await adminLogin(email, password);
-      if (!result.success) {
-        setError(result.error || 'Login failed');
-      } else {
-        router.push('/admin');
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.error || 'Login failed');
+        setLoading(false);
+        return;
       }
+
+      router.push('/admin');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
       setLoading(false);
     }
   };

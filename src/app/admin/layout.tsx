@@ -11,7 +11,6 @@ import {
   LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -28,27 +27,22 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [session, setSession] = useState<boolean | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (!data.session) {
-        router.push('/admin/login');
-      } else {
+    fetch('/api/auth/session')
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.authenticated) {
+          router.push('/admin/login');
+        } else {
+          setSession(true);
+        }
+      })
+      .catch(() => {
         setSession(true);
-      }
-    }).catch(() => {
-      setSession(true);
-    });
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
-        router.push('/admin/login');
-      }
-    });
-
-    return () => listener.subscription.unsubscribe();
+      });
   }, [router]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
+    await fetch('/api/auth/logout', { method: 'POST' });
     router.push('/admin/login');
   };
 

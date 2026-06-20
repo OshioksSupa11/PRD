@@ -2,12 +2,15 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { Plus, Pencil, Trash2, Award, X } from 'lucide-react';
-import {
-  createCertification,
-  updateCertification,
-  deleteCertification,
-  type CertificationFormData,
-} from '@/lib/actions/certifications';
+interface CertificationFormData {
+  title: string;
+  issuer: string;
+  issue_date: string;
+  certificate_url?: string;
+  image_url?: string;
+  verification_url?: string;
+  skill_tags?: string;
+}
 
 interface Certification {
   id: string;
@@ -80,11 +83,14 @@ export default function CertificationsPage() {
   const handleSubmit = () => {
     setError('');
     startTransition(async () => {
-      const result = editingId
-        ? await updateCertification(editingId, form)
-        : await createCertification(form);
-      if (!result.success) {
-        setError(result.error || 'Something went wrong');
+      const res = await fetch('/api/admin/certifications', {
+        method: editingId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingId ? { id: editingId, ...form } : form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || 'Something went wrong');
         return;
       }
       setShowForm(false);
@@ -94,7 +100,7 @@ export default function CertificationsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this certification?')) return;
-    await deleteCertification(id);
+    await fetch(`/api/admin/certifications?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
     fetchCerts();
   };
 
