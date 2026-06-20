@@ -16,6 +16,8 @@ export default function AdminPage() {
   const [stats, setStats] = useState<AdminStats>({ projects: 0, certifications: 0, blogPosts: 0, messages: 0 });
   const [loading, setLoading] = useState(true);
 
+  const [error, setError] = useState('');
+
   useEffect(() => {
     async function fetchStats() {
       try {
@@ -26,14 +28,22 @@ export default function AdminPage() {
           supabase.from('messages').select('*', { count: 'exact', head: true }),
         ]);
 
+        const rejected = [projectsRes, certsRes, blogRes, msgsRes]
+          .filter((r): r is PromiseRejectedResult => r.status === 'rejected');
+
+        if (rejected.length > 0) {
+          const msg = rejected[0].reason?.message || rejected[0].reason?.toString() || 'Unknown error';
+          setError(`Supabase connection error: ${msg}`);
+        }
+
         setStats({
           projects: projectsRes.status === 'fulfilled' ? (projectsRes.value.count ?? 0) : 0,
           certifications: certsRes.status === 'fulfilled' ? (certsRes.value.count ?? 0) : 0,
           blogPosts: blogRes.status === 'fulfilled' ? (blogRes.value.count ?? 0) : 0,
           messages: msgsRes.status === 'fulfilled' ? (msgsRes.value.count ?? 0) : 0,
         });
-      } catch {
-        // Supabase may not be configured locally
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch stats');
       }
       setLoading(false);
     }
@@ -50,6 +60,12 @@ export default function AdminPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold text-primary mb-8">Dashboard Overview</h1>
+
+      {error && (
+        <div className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4">
+          <p className="text-sm font-medium text-red-800">{error}</p>
+        </div>
+      )}
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
