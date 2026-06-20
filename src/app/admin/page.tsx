@@ -33,7 +33,7 @@ export default function AdminPage() {
 
         if (rejected.length > 0) {
           const msg = rejected[0].reason?.message || rejected[0].reason?.toString() || 'Unknown error';
-          setError(`Supabase connection error: ${msg}`);
+          setError(`Supabase error (${process.env.NEXT_PUBLIC_SUPABASE_URL || 'no URL set'}): ${msg}`);
         }
 
         setStats({
