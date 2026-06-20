@@ -12,20 +12,22 @@ interface AdminStats {
 }
 
 export default function AdminPage() {
-  const [stats, setStats] = useState<AdminStats>({ projects: 0, certifications: 0, blogPosts: 0, messages: 0 });
+  const [stats, setStats] = useState<AdminStats>({ projects: 99, certifications: 99, blogPosts: 99, messages: 99 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/admin-stats')
-      .then((res) => res.json())
+    fetch('/api/admin-stats?_=' + Date.now())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data) => {
-        if (data.error) setError(data.error);
         setStats(data);
         setLoading(false);
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+        setError(err.message || 'Failed');
         setLoading(false);
       });
   }, []);
