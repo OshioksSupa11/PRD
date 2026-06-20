@@ -6,7 +6,6 @@ export async function getAdminStats(): Promise<{
   blogPosts: number;
   messages: number;
   error?: string;
-  debug?: string;
 }> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -14,34 +13,37 @@ export async function getAdminStats(): Promise<{
   if (!url || !key) {
     return {
       projects: 0, certifications: 0, blogPosts: 0, messages: 0,
-      error: `Env vars missing. URL: ${url || '(none)'}, Key: ${key ? '(set)' : '(none)'}`,
+      error: 'Supabase configuration missing',
     };
   }
 
-  try {
-    const res = await fetch(`${url}/rest/v1/projects?select=count&head=true`, {
-      headers: { apikey: key },
+  const fetchCount = async (table: string): Promise<number> => {
+    const res = await fetch(`${url}/rest/v1/${table}?select=count`, {
+      headers: { apikey: key, Prefer: 'count=exact' },
     });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return (Array.isArray(data) && data[0]?.count) ? data[0].count as number : 0;
+  };
 
-    if (!res.ok) {
-      const body = await res.text();
-      return {
-        projects: 0, certifications: 0, blogPosts: 0, messages: 0,
-        error: `HTTP ${res.status}: ${body.slice(0, 200)}`,
-        debug: `URL: ${url}`,
-      };
-    }
+  try {
+    const [projects, certs, blog, msgs] = await Promise.allSettled([
+      fetchCount('projects'),
+      fetchCount('certifications'),
+      fetchCount('blog_posts'),
+      fetchCount('messages'),
+    ]);
 
-    const contentRange = res.headers.get('content-range');
-    const count = contentRange ? parseInt(contentRange.split('/')[1], 10) || 0 : 0;
-
-    return { projects: count, certifications: 0, blogPosts: 0, messages: 0, debug: `OK - connected to ${url}` };
+    return {
+      projects: projects.status === 'fulfilled' ? projects.value : 0,
+      certifications: certs.status === 'fulfilled' ? certs.value : 0,
+      blogPosts: blog.status === 'fulfilled' ? blog.value : 0,
+      messages: msgs.status === 'fulfilled' ? msgs.value : 0,
+    };
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
     return {
       projects: 0, certifications: 0, blogPosts: 0, messages: 0,
-      error: msg,
-      debug: `URL: ${url}`,
+      error: err instanceof Error ? err.message : 'Failed to fetch stats',
     };
   }
 }

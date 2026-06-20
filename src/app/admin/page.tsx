@@ -16,13 +16,11 @@ export default function AdminPage() {
   const [stats, setStats] = useState<AdminStats>({ projects: 0, certifications: 0, blogPosts: 0, messages: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [debug, setDebug] = useState('');
 
   useEffect(() => {
     getAdminStats().then((result) => {
       if (result.error) {
         setError(result.error);
-        if (result.debug) setDebug(result.debug);
       }
       setStats(result);
       setLoading(false);
@@ -46,9 +44,6 @@ export default function AdminPage() {
       {error && (
         <div className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4">
           <p className="text-sm font-medium text-red-800">{error}</p>
-          {debug && (
-            <p className="mt-1 text-xs text-red-600 font-mono">{debug}</p>
-          )}
         </div>
       )}
 

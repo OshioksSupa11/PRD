@@ -18,8 +18,8 @@ export async function GET() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
 
-    const res = await fetch(`${url}/rest/v1/projects?select=count&head=true`, {
-      headers: { apikey: key },
+    const res = await fetch(`${url}/rest/v1/projects?select=count`, {
+      headers: { apikey: key, Prefer: 'count=exact' },
       signal: controller.signal,
     });
 
@@ -34,7 +34,9 @@ export async function GET() {
       return NextResponse.json(result, { status: 500 });
     }
 
-    result.count = parseInt(res.headers.get('content-range')?.split('/')[1] || '0', 10) || 0;
+    const body = await res.json();
+    const parsed = body as unknown[];
+    result.count = Array.isArray(parsed) && parsed[0] ? (parsed[0] as Record<string, unknown>).count : 0;
     return NextResponse.json(result);
   } catch (err) {
     result.error = err instanceof Error ? err.message : String(err);
