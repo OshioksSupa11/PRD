@@ -34,6 +34,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       } else {
         setSession(true);
       }
+    }).catch(() => {
+      setSession(true);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {

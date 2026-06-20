@@ -25,9 +25,14 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  let session = null;
+  try {
+    const { data } = await supabase.auth.getSession();
+    session = data.session;
+  } catch {
+    // Supabase unavailable — let the client-side layout handle auth
+    return response;
+  }
 
   if (!session) {
     const loginUrl = new URL('/admin/login', request.url);
