@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase/client';
 import { FolderOpen, Award, FileText, MessageSquare } from 'lucide-react';
 
@@ -40,10 +41,10 @@ export default function AdminPage() {
   }, []);
 
   const statCards = [
-    { label: 'Projects', value: stats.projects, icon: FolderOpen },
-    { label: 'Certifications', value: stats.certifications, icon: Award },
-    { label: 'Blog Posts', value: stats.blogPosts, icon: FileText },
-    { label: 'Messages', value: stats.messages, icon: MessageSquare },
+    { label: 'Projects', value: stats.projects, icon: FolderOpen, href: '/admin/projects' },
+    { label: 'Certifications', value: stats.certifications, icon: Award, href: '/admin/certifications' },
+    { label: 'Blog Posts', value: stats.blogPosts, icon: FileText, href: '/admin/blog' },
+    { label: 'Messages', value: stats.messages, icon: MessageSquare, href: '/admin/messages' },
   ];
 
   return (
@@ -52,7 +53,11 @@ export default function AdminPage() {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
-          <div key={card.label} className="rounded-xl border border-border bg-bg p-6">
+          <Link
+            key={card.label}
+            href={card.href}
+            className="rounded-xl border border-border bg-bg p-6 hover:border-accent/30 hover:shadow-sm transition-all block"
+          >
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-text-muted">{card.label}</span>
               <card.icon className="h-5 w-5 text-text-muted" />
@@ -60,7 +65,7 @@ export default function AdminPage() {
             <span className="mt-3 block text-3xl font-bold text-primary">
               {loading ? '—' : card.value}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
 

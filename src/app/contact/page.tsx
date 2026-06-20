@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft, Mail, Phone, MapPin, Globe } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, MessageCircle, MapPin, Globe } from 'lucide-react';
 import ContactForm from '@/components/ui/ContactForm';
 import { profile } from '@/data/profile';
 
@@ -15,6 +15,12 @@ const contactMethods = [
     label: 'Phone',
     value: profile.phone,
     href: `tel:${profile.phone}`,
+  },
+  {
+    icon: MessageCircle,
+    label: 'WhatsApp',
+    value: 'Chat on WhatsApp',
+    href: `https://wa.me/${profile.whatsappNumber.replace(/\D/g, '')}`,
   },
   {
     icon: Globe,
@@ -64,8 +70,8 @@ export default function ContactPage() {
                     <a
                       key={method.label}
                       href={method.href}
-                      target={method.label === 'LinkedIn' ? '_blank' : undefined}
-                      rel={method.label === 'LinkedIn' ? 'noopener noreferrer' : undefined}
+                      target={method.href.startsWith('http') ? '_blank' : undefined}
+                      rel={method.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       className="flex items-center gap-4 group"
                     >
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 transition-colors group-hover:bg-accent/20">

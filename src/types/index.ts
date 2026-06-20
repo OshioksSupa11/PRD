@@ -6,6 +6,7 @@ export interface Profile {
   profileImage: string;
   email: string;
   phone: string;
+  whatsappNumber: string;
   linkedinUrl: string;
   githubUrl: string;
   resumeUrl: string;

@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import ProjectCard from '@/components/ui/ProjectCard';
 import { cn } from '@/lib/utils';
-import { projects } from '@/data/projects';
-import type { ProjectType } from '@/types';
+import { supabase } from '@/lib/supabase/client';
+import { projects as fallbackProjects } from '@/data/projects';
+import type { Project, ProjectType } from '@/types';
 
 const typeFilters: { label: string; value: ProjectType | 'All' }[] = [
   { label: 'All', value: 'All' },
@@ -15,9 +16,51 @@ const typeFilters: { label: string; value: ProjectType | 'All' }[] = [
   { label: 'Hybrid', value: 'hybrid' },
 ];
 
+function mapSupabaseProject(p: Record<string, unknown>): Project {
+  return {
+    id: p.id as string,
+    title: p.title as string,
+    slug: p.slug as string,
+    description: p.description as string,
+    image: (p.image_url as string) || '/images/projects/placeholder.jpg',
+    technologies: (p.technologies as string[]) || [],
+    techStack: (p.tech_stack as string[]) || [],
+    category: (p.category as string) || '',
+    type: (p.type as ProjectType) || 'engineering',
+    projectDate: (p.project_date as string) || '',
+    externalLink: (p.external_link as string) || undefined,
+    featured: (p.featured as boolean) || false,
+    published: (p.published as boolean) || false,
+    problem: p.problem as string | null,
+    research: p.research as string | null,
+    solution: p.solution as string | null,
+    designDecisions: p.design_decisions as string | null,
+    challenges: p.challenges as string | null,
+    results: p.results as string | null,
+    lessonsLearned: p.lessons_learned as string | null,
+    demoUrl: p.demo_url as string | null,
+    githubUrl: p.github_url as string | null,
+    screenshots: (p.screenshots as string[]) || [],
+    readTimeMinutes: p.read_time_minutes as number | null,
+  };
+}
+
 export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
   const [activeType, setActiveType] = useState<ProjectType | 'All'>('All');
   const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    supabase
+      .from('projects')
+      .select('*')
+      .order('project_date', { ascending: false })
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setProjects(data.map(mapSupabaseProject));
+        }
+      });
+  }, []);
 
   const publishedOnly = projects.filter((p) => p.published !== false);
 

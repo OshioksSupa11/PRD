@@ -16,23 +16,41 @@ import {
   GraduationCap,
   Layers,
 } from 'lucide-react';
-import { projects } from '@/data/projects';
+import { getProjectBySlug, getProjects } from '@/lib/data/projects';
 import { formatYear } from '@/lib/utils';
+import type { Project } from '@/types';
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+export async function generateStaticParams() {
+  try {
+    const projects = await getProjects();
+    if (projects.length === 0) {
+      const { projects: fallback } = await import('@/data/projects');
+      return fallback.map((project) => ({ slug: project.slug }));
+    }
+    return projects.map((project) => ({ slug: project.slug }));
+  } catch {
+    const { projects: fallback } = await import('@/data/projects');
+    return fallback.map((project) => ({ slug: project.slug }));
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
-  if (!project) return {};
+  let project: Project | null | undefined;
+  try {
+    project = await getProjectBySlug(slug);
+  } catch {
+    // fallback
+  }
+  if (!project) {
+    const { projects: fallback } = await import('@/data/projects');
+    project = fallback.find((p) => p.slug === slug);
+  }
+  if (!project) return { title: 'Project Not Found' };
   return {
     title: `${project.title} — Godsgrace Edem`,
     description: project.description,
@@ -41,7 +59,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = projects.find((p) => p.slug === slug);
+  let project: Project | null | undefined;
+  try {
+    project = await getProjectBySlug(slug);
+  } catch {
+    // fallback to hardcoded data
+  }
+  if (!project) {
+    const { projects: fallback } = await import('@/data/projects');
+    project = fallback.find((p) => p.slug === slug);
+  }
 
   if (!project) notFound();
 

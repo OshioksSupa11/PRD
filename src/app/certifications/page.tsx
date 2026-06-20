@@ -1,21 +1,49 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import CertificationCard from '@/components/ui/CertificationCard';
-import { certifications } from '@/data/certifications';
+import { supabase } from '@/lib/supabase/client';
+import { certifications as fallbackCerts } from '@/data/certifications';
+import type { Certification } from '@/types';
 import { cn } from '@/lib/utils';
 
+function mapSupabaseCert(c: Record<string, unknown>): Certification {
+  return {
+    id: c.id as string,
+    title: c.title as string,
+    issuer: c.issuer as string,
+    issueDate: c.issue_date as string,
+    certificateUrl: (c.certificate_url as string) || undefined,
+    imageUrl: (c.image_url as string) || null,
+    verificationUrl: (c.verification_url as string) || undefined,
+    skillTags: (c.skill_tags as string[]) || [],
+  };
+}
+
 export default function CertificationsPage() {
+  const [certifications, setCertifications] = useState<Certification[]>(fallbackCerts);
   const [search, setSearch] = useState('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase
+      .from('certifications')
+      .select('*')
+      .order('issue_date', { ascending: false })
+      .then(({ data }) => {
+        if (data && data.length > 0) {
+          setCertifications(data.map(mapSupabaseCert));
+        }
+      });
+  }, []);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
     certifications.forEach((c) => c.skillTags?.forEach((t) => tags.add(t)));
     return Array.from(tags).sort();
-  }, []);
+  }, [certifications]);
 
   const filtered = certifications.filter((c) => {
     const searchMatch =
