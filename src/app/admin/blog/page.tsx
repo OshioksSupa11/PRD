@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { Plus, Pencil, Trash2, FileText, X } from 'lucide-react';
 import {
   createBlogPost,
@@ -56,11 +55,11 @@ export default function BlogPage() {
   const [isPending, startTransition] = useTransition();
 
   const fetchPosts = async () => {
-    const { data } = await supabase
-      .from('blog_posts')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setPosts(data || []);
+    try {
+      const res = await fetch('/api/admin/blog');
+      const data = await res.json();
+      if (Array.isArray(data)) setPosts(data);
+    } catch { /* ignore */ }
     setLoading(false);
   };
 

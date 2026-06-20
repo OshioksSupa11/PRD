@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { Plus, Pencil, Trash2, Award, X } from 'lucide-react';
 import {
   createCertification,
@@ -44,11 +43,11 @@ export default function CertificationsPage() {
   const [isPending, startTransition] = useTransition();
 
   const fetchCerts = async () => {
-    const { data } = await supabase
-      .from('certifications')
-      .select('*')
-      .order('issue_date', { ascending: false });
-    setCerts(data || []);
+    try {
+      const res = await fetch('/api/admin/certifications');
+      const data = await res.json();
+      if (Array.isArray(data)) setCerts(data);
+    } catch { /* ignore */ }
     setLoading(false);
   };
 

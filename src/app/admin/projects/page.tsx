@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { Plus, Pencil, Trash2, FolderOpen, X, ChevronDown, ChevronUp } from 'lucide-react';
 import {
   createProject,
@@ -75,11 +74,11 @@ export default function ProjectsPage() {
   const [showCaseStudy, setShowCaseStudy] = useState(false);
 
   const fetchProjects = async () => {
-    const { data } = await supabase
-      .from('projects')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setProjects(data || []);
+    try {
+      const res = await fetch('/api/admin/projects');
+      const data = await res.json();
+      if (Array.isArray(data)) setProjects(data);
+    } catch { /* ignore */ }
     setLoading(false);
   };
 

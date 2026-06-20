@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import { Mail, Trash2, Eye, EyeOff, CheckCircle, Clock } from 'lucide-react';
 import {
   updateMessageStatus,
@@ -30,11 +29,11 @@ export default function MessagesPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const fetchMessages = async () => {
-    const { data } = await supabase
-      .from('messages')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setMessages(data || []);
+    try {
+      const res = await fetch('/api/admin/messages');
+      const data = await res.json();
+      if (Array.isArray(data)) setMessages(data);
+    } catch { /* ignore */ }
     setLoading(false);
   };
 
