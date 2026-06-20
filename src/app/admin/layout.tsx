@@ -9,6 +9,13 @@ import {
   MessageSquare,
   FileText,
   LogOut,
+  Wrench,
+  Briefcase,
+  Star,
+  Quote,
+  Clock,
+  Target,
+  User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -17,8 +24,15 @@ const navItems = [
   { label: 'Overview', href: '/admin', icon: LayoutDashboard },
   { label: 'Projects', href: '/admin/projects', icon: FolderOpen },
   { label: 'Certifications', href: '/admin/certifications', icon: Award },
-  { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
   { label: 'Blog Posts', href: '/admin/blog', icon: FileText },
+  { label: 'Skills', href: '/admin/skills', icon: Wrench },
+  { label: 'Experience', href: '/admin/experience', icon: Briefcase },
+  { label: 'Achievements', href: '/admin/achievements', icon: Star },
+  { label: 'Testimonials', href: '/admin/testimonials', icon: Quote },
+  { label: 'Timeline', href: '/admin/timeline', icon: Clock },
+  { label: 'Focus', href: '/admin/focus', icon: Target },
+  { label: 'Profile', href: '/admin/profile', icon: User },
+  { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
