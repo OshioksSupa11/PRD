@@ -1,9 +1,23 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import SkillBadge from '@/components/ui/SkillBadge';
 import FadeInSection from '@/components/shared/FadeInSection';
-import { skills, skillCategories } from '@/data/skills';
+import { skills as fallbackSkills, skillCategories } from '@/data/skills';
 
 export default function Skills() {
+  const [skills, setSkills] = useState(fallbackSkills);
+  useEffect(() => {
+    fetch('/api/admin/skills')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setSkills(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
   const groupedSkills = skillCategories.map((cat) => ({
     ...cat,
     items: skills.filter((s) => s.category === cat.name),

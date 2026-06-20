@@ -1,15 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import ProjectCard from '@/components/ui/ProjectCard';
 import ProjectModal from '@/components/ui/ProjectModal';
 import FadeInSection from '@/components/shared/FadeInSection';
-import { projects } from '@/data/projects';
+import { projects as fallbackProjects } from '@/data/projects';
 import type { Project } from '@/types';
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [projects, setProjects] = useState(fallbackProjects);
+  useEffect(() => {
+    fetch('/api/admin/projects')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProjects(data.map(p => ({ ...p, image: p.image_url || '/images/projects/placeholder.jpg', projectDate: p.project_date || '', techStack: p.tech_stack || [], externalLink: p.external_link, lessonsLearned: p.lessons_learned, designDecisions: p.design_decisions, readTimeMinutes: p.read_time_minutes, demoUrl: p.demo_url, githubUrl: p.github_url })));
+        }
+      })
+      .catch(() => {});
+  }, []);
   const featured = projects.filter((p) => p.featured);
   const other = projects.filter((p) => !p.featured);
 

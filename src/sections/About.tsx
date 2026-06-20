@@ -1,7 +1,10 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import FadeInSection from '@/components/shared/FadeInSection';
 import { Shield, Target, Lightbulb, Users } from 'lucide-react';
-import { profile } from '@/data/profile';
+import { profile as fallbackProfile } from '@/data/profile';
 
 const values = [
   {
@@ -31,6 +34,18 @@ const values = [
 ];
 
 export default function About() {
+  const [profile, setProfile] = useState(fallbackProfile);
+  useEffect(() => {
+    fetch('/api/admin/profile')
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.name) {
+          setProfile(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section id="about" className="py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

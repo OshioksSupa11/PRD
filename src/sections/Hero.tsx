@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, Download, Briefcase, Mail, Shield, Award, FolderCheck, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { profile } from '@/data/profile';
+import { profile as fallbackProfile } from '@/data/profile';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 const trustIndicators = [
@@ -18,6 +18,21 @@ const trustIndicators = [
 export default function Hero() {
   const [imgError, setImgError] = useState(false);
   const [bgError, setBgError] = useState(false);
+  const [profile, setProfile] = useState(fallbackProfile);
+  useEffect(() => {
+    fetch('/api/admin/profile')
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.name) {
+          setProfile({
+            ...data,
+            resumeUrl: data.resume_url || data.resumeUrl || fallbackProfile.resumeUrl,
+            profileImage: data.profile_image || data.image_url || data.profileImage || fallbackProfile.profileImage,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);

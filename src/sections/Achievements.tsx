@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Award, Briefcase, Shield, Code } from 'lucide-react';
 import SectionHeading from '@/components/ui/SectionHeading';
 import FadeInSection from '@/components/shared/FadeInSection';
@@ -17,34 +20,48 @@ interface AchievementsData {
   icon: string;
 }
 
-const achievements: AchievementsData[] = [
-  {
-    title: 'NFPA Certified Fire Protection Specialist',
-    description: 'Earned NFPA certification demonstrating comprehensive knowledge of fire protection systems, codes, and standards.',
-    achievementDate: '2023-09-15',
-    icon: 'Award',
-  },
-  {
-    title: '45+ Major Engineering Projects Completed',
-    description: 'Successfully delivered fire protection and life safety projects across commercial, industrial, healthcare, and residential sectors.',
-    achievementDate: '2025-06-01',
-    icon: 'Briefcase',
-  },
-  {
-    title: 'Fire Safety Compliance Program Lead',
-    description: 'Designed and implemented a comprehensive fire safety compliance program adopted across 6 industrial facilities.',
-    achievementDate: '2024-03-10',
-    icon: 'Shield',
-  },
-  {
-    title: 'Software Development Milestone',
-    description: 'Transitioned into technology building, learning full-stack development with Next.js, TypeScript, and modern tooling.',
-    achievementDate: '2026-01-01',
-    icon: 'Code',
-  },
-];
-
 export default function Achievements() {
+  const [achievements, setAchievements] = useState<AchievementsData[]>([
+    {
+      title: 'NFPA Certified Fire Protection Specialist',
+      description: 'Earned NFPA certification demonstrating comprehensive knowledge of fire protection systems, codes, and standards.',
+      achievementDate: '2023-09-15',
+      icon: 'Award',
+    },
+    {
+      title: '45+ Major Engineering Projects Completed',
+      description: 'Successfully delivered fire protection and life safety projects across commercial, industrial, healthcare, and residential sectors.',
+      achievementDate: '2025-06-01',
+      icon: 'Briefcase',
+    },
+    {
+      title: 'Fire Safety Compliance Program Lead',
+      description: 'Designed and implemented a comprehensive fire safety compliance program adopted across 6 industrial facilities.',
+      achievementDate: '2024-03-10',
+      icon: 'Shield',
+    },
+    {
+      title: 'Software Development Milestone',
+      description: 'Transitioned into technology building, learning full-stack development with Next.js, TypeScript, and modern tooling.',
+      achievementDate: '2026-01-01',
+      icon: 'Code',
+    },
+  ]);
+
+  useEffect(() => {
+    fetch('/api/admin/achievements')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setAchievements(data.map(a => ({
+            ...a,
+            achievementDate: a.achievement_date || ''
+          })));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section id="achievements" className="py-24 sm:py-32 bg-bg-alt">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
