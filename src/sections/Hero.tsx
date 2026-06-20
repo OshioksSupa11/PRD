@@ -27,7 +27,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-primary"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-primary"
     >
       <div className="absolute inset-0">
         {!bgError && (
@@ -110,8 +110,7 @@ export default function Hero() {
               href={profile.resumeUrl}
               variant="secondary"
               size="lg"
-              className="min-w-[180px]"
-              onClick={() => trackEvent(AnalyticsEvents.RESUME_DOWNLOAD, { format: 'designed' })}
+              className="min-w-[180px] whitespace-nowrap"
             >
               <Download className="h-5 w-5" />
               Download Resume
@@ -120,7 +119,7 @@ export default function Hero() {
               <Button
                 variant="ghost"
                 size="lg"
-                className="min-w-[180px] text-white/70 hover:text-accent hover:bg-bg/10"
+                className="min-w-[180px] whitespace-nowrap text-white/70 hover:text-accent hover:bg-bg/10"
               >
                 <Mail className="h-5 w-5" />
                 Contact Me

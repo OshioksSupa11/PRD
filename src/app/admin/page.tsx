@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase/client';
 import { FolderOpen, Award, FileText, MessageSquare } from 'lucide-react';
+import { getAdminStats } from '@/lib/actions/health';
 
 interface AdminStats {
   projects: number;
@@ -15,39 +15,19 @@ interface AdminStats {
 export default function AdminPage() {
   const [stats, setStats] = useState<AdminStats>({ projects: 0, certifications: 0, blogPosts: 0, messages: 0 });
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState('');
 
   useEffect(() => {
-    async function fetchStats() {
-      try {
-        const [projectsRes, certsRes, blogRes, msgsRes] = await Promise.allSettled([
-          supabase.from('projects').select('*', { count: 'exact', head: true }),
-          supabase.from('certifications').select('*', { count: 'exact', head: true }),
-          supabase.from('blog_posts').select('*', { count: 'exact', head: true }),
-          supabase.from('messages').select('*', { count: 'exact', head: true }),
-        ]);
-
-        const rejected = [projectsRes, certsRes, blogRes, msgsRes]
-          .filter((r): r is PromiseRejectedResult => r.status === 'rejected');
-
-        if (rejected.length > 0) {
-          const msg = rejected[0].reason?.message || rejected[0].reason?.toString() || 'Unknown error';
-          setError(`Supabase error (${process.env.NEXT_PUBLIC_SUPABASE_URL || 'no URL set'}): ${msg}`);
-        }
-
-        setStats({
-          projects: projectsRes.status === 'fulfilled' ? (projectsRes.value.count ?? 0) : 0,
-          certifications: certsRes.status === 'fulfilled' ? (certsRes.value.count ?? 0) : 0,
-          blogPosts: blogRes.status === 'fulfilled' ? (blogRes.value.count ?? 0) : 0,
-          messages: msgsRes.status === 'fulfilled' ? (msgsRes.value.count ?? 0) : 0,
-        });
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+    getAdminStats().then((result) => {
+      if (result.error) {
+        setError(result.error);
       }
+      setStats(result);
       setLoading(false);
-    }
-    fetchStats();
+    }).catch((err) => {
+      setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+      setLoading(false);
+    });
   }, []);
 
   const statCards = [
