@@ -51,14 +51,14 @@ export default function Hero() {
         >
           <div className="mx-auto w-full max-w-sm rounded-xl shadow-2xl overflow-hidden lg:mx-0">
             {imgError ? (
-              <span className="flex h-64 w-full items-center justify-center bg-gray-200/20 text-5xl font-bold text-gray-700 sm:h-80 sm:text-6xl">
+              <span className="flex aspect-[3/4] w-full items-center justify-center bg-gray-200/20 text-5xl font-bold text-gray-700">
                 GE
               </span>
             ) : (
               <img
                 src={profile.profileImage}
                 alt={profile.name}
-                className="h-64 w-full object-cover sm:h-80"
+                className="w-full object-contain"
                 onError={() => setImgError(true)}
               />
             )}
