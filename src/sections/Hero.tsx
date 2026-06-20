@@ -70,7 +70,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
+            className="text-2xl font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
           >
             Hi, I&apos;m {profile.name}
           </motion.h1>
@@ -132,12 +132,12 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-12 flex flex-col items-center gap-4 lg:items-start"
+            className="mt-12 flex flex-wrap items-center gap-4 justify-center lg:justify-start"
           >
             {trustIndicators.map((indicator) => (
               <div key={indicator.label} className="flex items-center gap-2 text-white/80 whitespace-nowrap">
                 <indicator.icon className="h-4 w-4 text-accent-light" />
-                <span className="text-sm">
+                <span className="text-xs">
                   <strong className="text-white">{indicator.value}</strong>{' '}
                   <span className="text-white/60">{indicator.label}</span>
                 </span>
