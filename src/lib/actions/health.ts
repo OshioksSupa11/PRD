@@ -20,7 +20,7 @@ export async function getAdminStats(): Promise<{
 
   try {
     const res = await fetch(`${url}/rest/v1/projects?select=count&head=true`, {
-      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      headers: { apikey: key },
     });
 
     if (!res.ok) {
