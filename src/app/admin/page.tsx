@@ -12,12 +12,12 @@ interface AdminStats {
 }
 
 export default function AdminPage() {
-  const [stats, setStats] = useState<AdminStats>({ projects: 99, certifications: 99, blogPosts: 99, messages: 99 });
+  const [stats, setStats] = useState<AdminStats>({ projects: 0, certifications: 0, blogPosts: 0, messages: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/admin-stats?_=' + Date.now())
+    fetch('/api/admin-stats')
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();

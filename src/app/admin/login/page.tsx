@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { adminLogin } from '@/lib/actions/auth';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -17,15 +18,10 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      const { supabase } = await import('@/lib/supabase/client');
-
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (authError) throw authError;
-      if (data.session) {
+      const result = await adminLogin(email, password);
+      if (!result.success) {
+        setError(result.error || 'Login failed');
+      } else {
         router.push('/admin');
       }
     } catch (err) {
