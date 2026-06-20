@@ -144,20 +144,22 @@ export default function Hero() {
               </div>
             ))}
           </motion.div>
-        </div>
-      </div>
 
-      <div className="relative z-10 pb-8">
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          onClick={() => scrollTo('highlights')}
-          className="mx-auto flex animate-bounce items-center justify-center text-white/60 hover:text-white transition-colors"
-          aria-label="Scroll down"
-        >
-          <ArrowDown className="h-6 w-6" />
-        </motion.button>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="mt-12 flex justify-center lg:justify-start"
+          >
+            <button
+              onClick={() => scrollTo('highlights')}
+              className="flex animate-bounce items-center justify-center text-white/60 hover:text-white transition-colors"
+              aria-label="Scroll down"
+            >
+              <ArrowDown className="h-6 w-6" />
+            </button>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
