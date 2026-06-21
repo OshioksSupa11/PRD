@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 
 export default function ContactForm() {
@@ -30,14 +29,14 @@ export default function ContactForm() {
 
     startTransition(async () => {
       try {
-        const { error } = await supabase.from('messages').insert({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
         });
 
-        if (error) throw error;
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to send');
 
         setStatus('success');
         setFormData({ name: '', email: '', subject: '', message: '' });
