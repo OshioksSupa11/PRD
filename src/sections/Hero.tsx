@@ -96,7 +96,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 text-lg leading-relaxed text-accent-light sm:text-xl md:text-2xl"
           >
-            Fire Protection Engineer & Emerging Technology Builder
+            {profile.headline}
           </motion.p>
 
           <motion.p
