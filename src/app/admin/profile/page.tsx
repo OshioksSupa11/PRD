@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
-import { User, X } from 'lucide-react';
+import { useEffect, useRef, useState, useTransition } from 'react';
+import { Loader2, Upload, User, X } from 'lucide-react';
 
 interface ProfileFormData {
   name: string;
@@ -56,6 +56,40 @@ export default function ProfilePage() {
   const [form, setForm] = useState<ProfileFormData>(emptyForm);
   const [error, setError] = useState('');
   const [isPending, startTransition] = useTransition();
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const [uploadingDesigned, setUploadingDesigned] = useState(false);
+  const [uploadingAts, setUploadingAts] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileDesignedRef = useRef<HTMLInputElement>(null);
+  const fileAtsRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = async (
+    file: File,
+    field: 'resume_url' | 'resume_url_designed' | 'resume_url_ats'
+  ) => {
+    const setter = {
+      resume_url: setUploadingResume,
+      resume_url_designed: setUploadingDesigned,
+      resume_url_ats: setUploadingAts,
+    }[field];
+
+    setter(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Upload failed');
+        return;
+      }
+      setForm((prev) => ({ ...prev, [field]: data.url }));
+    } catch {
+      setError('Upload failed. Please try again.');
+    } finally {
+      setter(false);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -285,30 +319,123 @@ export default function ProfilePage() {
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-text">Resume URL</label>
-              <input
-                className={inputClass}
-                value={form.resume_url}
-                onChange={(e) => setForm({ ...form, resume_url: e.target.value })}
-                placeholder="https://..."
-              />
+              <div className="flex gap-2">
+                <input
+                  className={inputClass}
+                  value={form.resume_url}
+                  onChange={(e) => setForm({ ...form, resume_url: e.target.value })}
+                  placeholder="Paste URL or upload file"
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file, 'resume_url');
+                    e.target.value = '';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadingResume}
+                  className="inline-flex items-center gap-1 rounded-lg border border-border bg-bg-alt px-3 py-2 text-xs font-medium text-text-muted hover:text-text hover:border-accent transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {uploadingResume ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  Upload
+                </button>
+              </div>
+              {form.resume_url && (
+                <p className="mt-1 text-xs text-text-muted truncate">
+                  <span className="text-accent">Uploaded:</span> {form.resume_url}
+                </p>
+              )}
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-text">Designed Resume URL</label>
-              <input
-                className={inputClass}
-                value={form.resume_url_designed}
-                onChange={(e) => setForm({ ...form, resume_url_designed: e.target.value })}
-                placeholder="https://..."
-              />
+              <div className="flex gap-2">
+                <input
+                  className={inputClass}
+                  value={form.resume_url_designed}
+                  onChange={(e) => setForm({ ...form, resume_url_designed: e.target.value })}
+                  placeholder="Paste URL or upload file"
+                />
+                <input
+                  ref={fileDesignedRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file, 'resume_url_designed');
+                    e.target.value = '';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileDesignedRef.current?.click()}
+                  disabled={uploadingDesigned}
+                  className="inline-flex items-center gap-1 rounded-lg border border-border bg-bg-alt px-3 py-2 text-xs font-medium text-text-muted hover:text-text hover:border-accent transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {uploadingDesigned ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  Upload
+                </button>
+              </div>
+              {form.resume_url_designed && (
+                <p className="mt-1 text-xs text-text-muted truncate">
+                  <span className="text-accent">Uploaded:</span> {form.resume_url_designed}
+                </p>
+              )}
             </div>
             <div>
               <label className="mb-1 block text-xs font-medium text-text">ATS Resume URL</label>
-              <input
-                className={inputClass}
-                value={form.resume_url_ats}
-                onChange={(e) => setForm({ ...form, resume_url_ats: e.target.value })}
-                placeholder="https://..."
-              />
+              <div className="flex gap-2">
+                <input
+                  className={inputClass}
+                  value={form.resume_url_ats}
+                  onChange={(e) => setForm({ ...form, resume_url_ats: e.target.value })}
+                  placeholder="Paste URL or upload file"
+                />
+                <input
+                  ref={fileAtsRef}
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file, 'resume_url_ats');
+                    e.target.value = '';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileAtsRef.current?.click()}
+                  disabled={uploadingAts}
+                  className="inline-flex items-center gap-1 rounded-lg border border-border bg-bg-alt px-3 py-2 text-xs font-medium text-text-muted hover:text-text hover:border-accent transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {uploadingAts ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  Upload
+                </button>
+              </div>
+              {form.resume_url_ats && (
+                <p className="mt-1 text-xs text-text-muted truncate">
+                  <span className="text-accent">Uploaded:</span> {form.resume_url_ats}
+                </p>
+              )}
             </div>
             <div className="sm:col-span-2">
               <label className="mb-1 block text-xs font-medium text-text">Bio</label>

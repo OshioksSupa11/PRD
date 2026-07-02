@@ -123,6 +123,7 @@ export default function Hero() {
             </Link>
             <Button
               href={profile.resumeUrl}
+              external
               variant="secondary"
               size="lg"
               className="min-w-[180px] whitespace-nowrap"
