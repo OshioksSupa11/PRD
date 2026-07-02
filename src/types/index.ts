@@ -12,6 +12,7 @@ export interface Profile {
   resumeUrl: string;
   resumeUrlDesigned?: string | null;
   resumeUrlAts?: string | null;
+  resumeUrlDocx?: string | null;
 }
 
 export interface Stat {

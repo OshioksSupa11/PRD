@@ -27,5 +27,6 @@ export async function getProfile(): Promise<Profile | null> {
     resumeUrl: data.resume_url || '/documents/resume.pdf',
     resumeUrlDesigned: data.resume_url_designed,
     resumeUrlAts: data.resume_url_ats,
+    resumeUrlDocx: data.resume_url_docx,
   };
 }

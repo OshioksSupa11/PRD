@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, Download, Briefcase, Mail, Shield, Award, FolderCheck, GraduationCap } from 'lucide-react';
+import { ArrowDown, Briefcase, Mail, Shield, Award, FolderCheck, GraduationCap } from 'lucide-react';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 import { profile as fallbackProfile } from '@/data/profile';
@@ -121,16 +121,6 @@ export default function Hero() {
                 View My Work
               </Button>
             </Link>
-            <Button
-              href={profile.resumeUrl}
-              external
-              variant="secondary"
-              size="lg"
-              className="min-w-[180px] whitespace-nowrap"
-            >
-              <Download className="h-5 w-5" />
-              Download Resume
-            </Button>
             <Link href="/contact">
               <Button
                 variant="ghost"

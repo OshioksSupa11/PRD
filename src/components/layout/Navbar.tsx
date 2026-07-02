@@ -76,7 +76,7 @@ export default function Navbar() {
     }
   };
 
-  const handleDownload = (url: string, format: 'designed' | 'ats') => {
+  const handleDownload = (url: string, format: 'designed' | 'ats' | 'docx') => {
     trackEvent(AnalyticsEvents.RESUME_DOWNLOAD, { format });
     window.open(url, '_blank');
     setResumeOpen(false);
@@ -161,6 +161,15 @@ export default function Navbar() {
                     <FileText className="h-4 w-4 text-text-muted" />
                     ATS-Friendly
                   </button>
+                  {profile.resumeUrlDocx && (
+                    <button
+                       onClick={() => handleDownload(profile.resumeUrlDocx!, 'docx')}
+                      className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text hover:bg-bg-alt transition-colors"
+                    >
+                      <FileText className="h-4 w-4 text-text-muted" />
+                      DOCX Format
+                    </button>
+                  )}
                 </div>
               )}
             </div>

@@ -15,6 +15,7 @@ interface ProfileFormData {
   resume_url: string;
   resume_url_designed: string;
   resume_url_ats: string;
+  resume_url_docx: string;
 }
 
 interface Profile {
@@ -30,6 +31,7 @@ interface Profile {
   resume_url: string | null;
   resume_url_designed: string | null;
   resume_url_ats: string | null;
+  resume_url_docx: string | null;
 }
 
 const emptyForm: ProfileFormData = {
@@ -44,6 +46,7 @@ const emptyForm: ProfileFormData = {
   resume_url: '',
   resume_url_designed: '',
   resume_url_ats: '',
+  resume_url_docx: '',
 };
 
 const inputClass =
@@ -59,18 +62,21 @@ export default function ProfilePage() {
   const [uploadingResume, setUploadingResume] = useState(false);
   const [uploadingDesigned, setUploadingDesigned] = useState(false);
   const [uploadingAts, setUploadingAts] = useState(false);
+  const [uploadingDocx, setUploadingDocx] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileDesignedRef = useRef<HTMLInputElement>(null);
   const fileAtsRef = useRef<HTMLInputElement>(null);
+  const fileDocxRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (
     file: File,
-    field: 'resume_url' | 'resume_url_designed' | 'resume_url_ats'
+    field: 'resume_url' | 'resume_url_designed' | 'resume_url_ats' | 'resume_url_docx'
   ) => {
     const setter = {
       resume_url: setUploadingResume,
       resume_url_designed: setUploadingDesigned,
       resume_url_ats: setUploadingAts,
+      resume_url_docx: setUploadingDocx,
     }[field];
 
     setter(true);
@@ -109,6 +115,7 @@ export default function ProfilePage() {
           resume_url: data.resume_url || '',
           resume_url_designed: data.resume_url_designed || '',
           resume_url_ats: data.resume_url_ats || '',
+          resume_url_docx: data.resume_url_docx || '',
         });
       }
     } catch { /* ignore */ }
@@ -208,6 +215,7 @@ export default function ProfilePage() {
                 { label: 'Resume URL', value: profile.resume_url },
                 { label: 'Designed Resume URL', value: profile.resume_url_designed },
                 { label: 'ATS Resume URL', value: profile.resume_url_ats },
+                { label: 'DOCX Resume URL', value: profile.resume_url_docx },
               ].map((row) => (
                 <tr key={row.label} className="hover:bg-bg-alt/50 transition-colors">
                   <td className="px-6 py-4">
@@ -434,6 +442,46 @@ export default function ProfilePage() {
               {form.resume_url_ats && (
                 <p className="mt-1 text-xs text-text-muted truncate">
                   <span className="text-accent">Uploaded:</span> {form.resume_url_ats}
+                </p>
+              )}
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-medium text-text">Resume DOCX URL</label>
+              <div className="flex gap-2">
+                <input
+                  className={inputClass}
+                  value={form.resume_url_docx}
+                  onChange={(e) => setForm({ ...form, resume_url_docx: e.target.value })}
+                  placeholder="Paste URL or upload file"
+                />
+                <input
+                  ref={fileDocxRef}
+                  type="file"
+                  accept=".docx,.doc"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(file, 'resume_url_docx');
+                    e.target.value = '';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileDocxRef.current?.click()}
+                  disabled={uploadingDocx}
+                  className="inline-flex items-center gap-1 rounded-lg border border-border bg-bg-alt px-3 py-2 text-xs font-medium text-text-muted hover:text-text hover:border-accent transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {uploadingDocx ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Upload className="h-3.5 w-3.5" />
+                  )}
+                  Upload
+                </button>
+              </div>
+              {form.resume_url_docx && (
+                <p className="mt-1 text-xs text-text-muted truncate">
+                  <span className="text-accent">Uploaded:</span> {form.resume_url_docx}
                 </p>
               )}
             </div>

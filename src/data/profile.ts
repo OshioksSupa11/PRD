@@ -18,6 +18,7 @@ Godsgrace is committed to advancing fire safety standards through continuous lea
   resumeUrl: '/documents/resume.pdf',
   resumeUrlDesigned: '/documents/resume.pdf',
   resumeUrlAts: '/documents/resume-ats.pdf',
+  resumeUrlDocx: '/documents/resume.docx',
 };
 
 export const stats: Stat[] = [
