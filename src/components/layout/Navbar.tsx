@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import useActiveSection from '@/hooks/useActiveSection';
 import Logo from '@/components/ui/Logo';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import { profile } from '@/data/profile';
+import { profile as fallbackProfile } from '@/data/profile';
 import { trackEvent, AnalyticsEvents } from '@/lib/analytics';
 import type { NavLink } from '@/types';
 
@@ -29,6 +29,23 @@ export default function Navbar() {
   const [resumeOpen, setResumeOpen] = useState(false);
   const resumeRef = useRef<HTMLDivElement>(null);
   const activeSection = useActiveSection();
+  const [profile, setProfile] = useState(fallbackProfile);
+
+  useEffect(() => {
+    fetch('/api/admin/profile')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.name) {
+          setProfile((prev) => ({
+            ...prev,
+            resumeUrl: data.resume_url || prev.resumeUrl,
+            resumeUrlDesigned: data.resume_url_designed || prev.resumeUrlDesigned,
+            resumeUrlDocx: data.resume_url_docx || prev.resumeUrlDocx,
+          }));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
