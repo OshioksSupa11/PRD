@@ -154,13 +154,6 @@ export default function Navbar() {
                     <FileCheck className="h-4 w-4 text-accent" />
                     Designed PDF
                   </button>
-                  <button
-                    onClick={() => handleDownload(profile.resumeUrlAts || profile.resumeUrl, 'ats')}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-text hover:bg-bg-alt transition-colors"
-                  >
-                    <FileText className="h-4 w-4 text-text-muted" />
-                    ATS-Friendly
-                  </button>
                   {profile.resumeUrlDocx && (
                     <button
                        onClick={() => handleDownload(profile.resumeUrlDocx!, 'docx')}
@@ -220,17 +213,19 @@ export default function Navbar() {
                 Download Resume (Designed)
               </a>
             </li>
-            <li>
-              <a
-                href={profile.resumeUrlAts || profile.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-lg text-base font-medium text-text-muted hover:bg-bg-alt hover:text-text transition-colors"
-              >
-                <FileText className="h-5 w-5" />
-                Download Resume (ATS)
-              </a>
-            </li>
+            {profile.resumeUrlDocx && (
+              <li>
+                <a
+                  href={profile.resumeUrlDocx!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 w-full text-left px-4 py-3 rounded-lg text-base font-medium text-text-muted hover:bg-bg-alt hover:text-text transition-colors"
+                >
+                  <FileText className="h-5 w-5" />
+                  Download Resume (DOCX)
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       )}
